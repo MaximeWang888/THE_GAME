@@ -7,60 +7,96 @@ public class JoueurTest {
 
     @Test
     public void testJoueur() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD);
         Joueur jS = new Joueur(Noms.SUD);
-        assertFalse(jN.toString().equals(jS.toString()));
+
+        // THEN
+        assertNotEquals("Le contenu des joueurs doit être différent", jN.toString(), jS.toString());
     }
 
     @Test
     public void testGetNom() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
         Joueur jS = new Joueur(Noms.SUD);
-        assertFalse(jN.getNom().equals(jS.getNom()));
+
+        // THEN
+        assertNotEquals("Les noms des joueurs doivent être différents", jN.toString(), jS.toString());
     }
 
     @Test
     public void testGetAscendant() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
         Joueur jS = new Joueur(Noms.SUD);
-        int carteAscendantNord = jN.getAscendant().getValeur();
-        int carteAscendantSud = jS.getAscendant().getValeur();
-        assertTrue(carteAscendantNord==carteAscendantSud && jN.getAscendant().getValeur()==1);
+
+        // THEN
+        assertEquals("La valeur de la carte ascendente doit être identique à celle de l'adversaire" +
+                "en début de partie", jN.getAscendant().getValeur(), jS.getAscendant().getValeur());
     }
 
     @Test
     public void testGetDescendant() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
         Joueur jS = new Joueur(Noms.SUD);
-        assertTrue(jN.getDescendant().getValeur().equals(jS.getDescendant().getValeur())
-                && jN.getDescendant().getValeur()==60);
+
+        // THEN
+        assertEquals("La valeur de la carte descendante doit être identique à celle de l'adversaire" +
+                "en début de partie", jN.getDescendant().getValeur(), jS.getDescendant().getValeur());
     }
 
     @Test
     public void testGetNbDeMaPioche() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
-        assertTrue(jN.getNbDeMaPioche()==52);
+
+        // THEN
+        assertEquals("Le nombre de cartes de la pioche du joueur doit être égal à 52",
+                jN.getNbDeMaPioche(), 52);
     }
 
     @Test
     public void testGetNbDeMesCartes() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
-        assertTrue(jN.getNbDeMesCartes()==6);
+
+        // THEN
+        assertEquals("Le nombre en cartes en main du joueur doit être égal à 6",
+                jN.getNbDeMesCartes(), 6);
     }
 
     @Test
-    public void testTourDeJouer() {
+    public void testAMonTourDeJouer() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
         Joueur jS = new Joueur(Noms.SUD);
-        assertTrue(jN.aMonTourDeJouer(jS) && jS.aMonTourDeJouer(jN));
-        assertFalse(jS.aMonTourDeJouer(jN));
+
+        // THEN
+        assertEquals(false, jS.aMonTourDeJouer(jN));
+        assertEquals(true, jN.aMonTourDeJouer(jS));
+        assertEquals(true, jS.aMonTourDeJouer(jN));
+        assertEquals(true, jN.aMonTourDeJouer(jS));
     }
 
     @Test
     public void testADesCartes() {
-        Joueur jN = new Joueur(Noms.NORD, true);
+        // GIVEN
         Joueur jS = new Joueur(Noms.SUD);
-        assertTrue(jN.aDesCartes() && jS.aDesCartes());
+
+        // THEN
+        assertEquals(true, jS.aDesCartes());
+
+        // WHEN
+        // Retire toutes ses cartes
+        int nbCartes = jS.getMesCartes().getNbCartes();
+        for (int i = 0; i < nbCartes; i++)
+            jS.getMesCartes().removeCarte(0);
+
+        // THEN
+        assertEquals("On vient de supprimer toutes ces cartes donc " +
+                "il ne doit plus avoir de cartes en main", false, jS.aDesCartes());
     }
 
     @Test

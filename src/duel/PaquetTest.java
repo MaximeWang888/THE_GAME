@@ -7,71 +7,99 @@ public class PaquetTest {
 
     @Test
     public void testPaquet() {
+        // GIVEN
         Paquet pVide = new Paquet();
         Paquet pComplet = new Paquet(true) ;
-        assertFalse(pVide.toString().equals(pComplet.toString()));
+
+        // THEN
+        assertNotEquals("Le contenu du paquet doit être différent", pVide.toString(), pComplet.toString());
     }
 
     @Test
     public void testGetCarte() {
-        Paquet pComplet = new Paquet(true);
-        int valeur1 = pComplet.getCarte(0).getValeur();
-        int valeur2 = pComplet.getCarte(1).getValeur();
-        assertFalse(valeur1 == valeur2);
+        // GIVEN
+        Joueur j = new Joueur(Noms.NORD);
+
+        // WHEN
+        j.getMesCartes().getCartes().add(new Carte(500));
+
+        // THEN
+        assertEquals("La valeur des cartes comparées doit être équivalue",
+                new Carte(500).getValeur(), j.getMesCartes().getCarte(6).getValeur());
     }
 
     @Test
     public void testGetNbDeCarte() {
+        // GIVEN
         Paquet pComplet = new Paquet(true);
-        assertTrue(pComplet.getNbCartes()==58);
+
+        // THEN
+        assertEquals("Le nombre de cartes d'un paquet complet doit être égal à 58",
+                pComplet.getNbCartes(), 58);
     }
 
     @Test
     public void testPiocher() {
-        Paquet pComplet = new Paquet(true);
-        Paquet pVide = new Paquet();
-        assertTrue(pVide.estVide());
-        int nbDeCartesAvantPioche = pComplet.getNbCartes();
-        pComplet.piocher();
-        assertTrue(nbDeCartesAvantPioche-1 == pComplet.getNbCartes());
+        // GIVEN
+        Paquet p = new Paquet(true);
+
+        // THEN
+        assertNotEquals("Les cartes piochées doivent être différentes", p.piocher(), p.piocher());
     }
 
     @Test
     public void testEstVide() {
+        // GIVEN
         Paquet pVide = new Paquet();
+
+        // THEN
         assertTrue(pVide.estVide());
     }
 
     @Test
     public void testRemoveCarte() {
-        Paquet pVide = new Paquet();
-        for (int i = 1; i < 4; i++)
-            pVide.getCartes().add(new Carte(i*3));
-        for (int y = 0; !pVide.estVide(); y++){
-            assertFalse(pVide.estVide());
-            pVide.removeCarte(pVide.getNbCartes() - 1);
-        }
-        assertTrue(pVide.estVide());
+        // GIVEN
+        Paquet pComplet = new Paquet(true);
+
+        // THEN
+        assertNotEquals("Les cartes retirés du paquet doivent avoir une valeur différente",
+                pComplet.removeCarte(0), pComplet.removeCarte(0));
     }
 
     @Test
     public void testPaquetDeCartesPosable() {
-        Joueur jN = new Joueur(Noms.NORD, true);
-        Joueur jS = new Joueur(Noms.SUD);
-        assertTrue(jS.peutPoserDesCartes(jN));
-        Paquet p = new Paquet(true);
-        assertTrue(p.paquetDeCartesPosable(new Carte(5),new Carte(60),new Carte(5),new Carte(60),
-                true));
-        Paquet pVide = new Paquet();
-        for (int i = 1; i < 4; i++)
-            pVide.getCartes().add(new Carte(i*3));
-        assertFalse(pVide.paquetDeCartesPosable(new Carte(1),new Carte(60),new Carte(60),new Carte(1),
-                true));
-        Paquet peutEtrePoser = new Paquet();
-        peutEtrePoser.getCartes().add(new Carte(5));
-        peutEtrePoser.getCartes().add(new Carte(6));
-        String[] saisi = "55^ 99^ 80^".split(" ");
-        assertFalse(jN.estUneSaisiValide(saisi, jS));
+        // GIVEN
+        Joueur j = new Joueur(Noms.NORD);
+        // Retire toutes ses cartes
+        for (int i = 0; i < j.getMesCartes().getNbCartes()-1; i++)
+            j.getMesCartes().removeCarte(i);
+        // Ajoute quelques cartes
+        j.getMesCartes().getCartes().add(new Carte(25));
+        j.getMesCartes().getCartes().add(new Carte(42));
+        j.getMesCartes().getCartes().add(new Carte(55));
+
+        // THEN
+        assertEquals("Qu'une seule carte serait posable dans le tas adverse, on s'attend " +
+                        "qu'il nous retourne FALSE", false, j.getMesCartes().paquetDeCartesPosable(
+                                new Carte(1),new Carte(60), new Carte(1),new Carte(60)));
+        assertEquals("\nLa carte 55 devrait normalement être posable sur sa carte ascendante et \n" +
+                "la carte 25 devrait aussi être posable sur la carte descendante du tas adverse",
+                true, j.getMesCartes().paquetDeCartesPosable(new Carte(20),new Carte(50),
+                new Carte(10),new Carte(20)));
     }
 
+    @Test
+    public void testIsCarteEnMain() {
+        // GIVEN
+        Joueur jV = new Joueur(Noms.NORD);
+
+        // WHEN
+        jV.ajoute(new Carte(100));
+        jV.ajoute(new Carte(101));
+
+        // THEN
+        assertTrue(jV.getMesCartes().isCartePresenteEnMain("100"));
+        assertTrue(jV.getMesCartes().isCartePresenteEnMain("101"));
+        assertFalse(jV.getMesCartes().isCartePresenteEnMain("1001"));
+    }
 }

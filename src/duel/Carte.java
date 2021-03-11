@@ -150,7 +150,7 @@ public class Carte {
     }
 
     /**
-     * Permet de savoir si une nouvelle carte est posable sur une ancienne carte ascendante
+     * Permet de savoir si une nouvelle carte est posable sur une ancienne carte ascendante de l'adversaire
      * @param adversaireA la carte ascendante de l'adversaire actuellement
      * @return TRUE si c'est une carte posable sur l'ancienne carte ascendante de l'adversaire, FALSE
      * dans le cas contraire
@@ -160,7 +160,7 @@ public class Carte {
     }
 
     /**
-     * Permet de savoir si une nouvelle carte est posable sur une ancienne carte descendante
+     * Permet de savoir si une nouvelle carte est posable sur une ancienne carte descendante de l'adversaire
      * @param adversaireD la carte descendante de l'adversaire actuellement
      * @return TRUE si c'est une carte posable sur l'ancienne carte descendante de l'adversaire, FALSE
      * dans le cas contraire

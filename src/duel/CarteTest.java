@@ -2,54 +2,73 @@ package duel;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class CarteTest {
 
     @Test
     public void testCarte() {
-        Carte c1 = new Carte(5);
-        Carte c2 = new Carte(6);
-        assertFalse(c1.toString().equals(c2.toString()));
+        // GIVEN
+        Carte c1 = new Carte(6);
+
+        // THEN
+        assertEquals("Les cartes comparées doivent être identiques", c1.toString(), c1.toString());
     }
 
     @Test
     public void testGetValeur() {
+        // GIVEN
         Carte c1 = new Carte(5);
         Carte c2 = new Carte(6);
-        assertFalse(c1.getValeur().equals(c2.getValeur()));
+
+        // THEN
+        assertNotEquals("Les deux cartes ne doivent pas avoir la même valeur", c1.getValeur(), c2.getValeur());
     }
 
     @Test
     public void testSetValeur() {
+        // GIVEN
         Carte c1 = new Carte(5);
-        Carte c2 = new Carte(0);
-        c2.setValeur(5);
-        assertFalse(c1.equals(c2));
+        Carte c2 = new Carte(5);
+
+        // THEN
+        assertEquals("Les deux cartes doivent avoir la même valeur de carte", c1.getValeur(), c2.getValeur());
+
+        // WHEN
+        c2.setValeur(0);
+
+        // THEN
+        assertNotEquals("Les deux cartes ne doivent pas avoir la même valeur de carte",
+                c1.getValeur(), c2.getValeur());
     }
 
     @Test
     public void testEstUneCartePosable() {
-        Paquet pVide = new Paquet();
-        for (int i = 1; i < 4; i++)
-            pVide.getCartes().add(new Carte(i*3));
-        Paquet pComplet = new Paquet(true);
-        assertTrue(pVide.getCarte(1).estUneCartePosable(new Carte(60),new Carte(1),
-                new Carte(60),new Carte(1),pComplet.getCartes(), 1));
+        // GIVEN
+        Joueur j = new Joueur(Noms.NORD);
+        // Retire toutes ses cartes
+        int nbCartes = j.getMesCartes().getNbCartes();
+        for (int i = 0; i < nbCartes; i++)
+            j.getMesCartes().removeCarte(0);
+        // Ajoute quelques cartes
+        j.getMesCartes().getCartes().add(new Carte(25));
+        j.getMesCartes().getCartes().add(new Carte(42));
+        j.getMesCartes().getCartes().add(new Carte(55));
 
-        assertTrue(pVide.getCarte(1).estUneCartePosable(new Carte(60),new Carte(60),
-                new Carte(60),new Carte(1),pComplet.getCartes(), 1));
+        // THEN
+        assertEquals( j + "\nLa carte 55 devrait normalement être posable sur sa carte ascendante et \n" +
+                        "la carte 25 devrait aussi être posable sur la carte descendante du tas adverse",
+                true, j.getMesCartes().paquetDeCartesPosable(new Carte(20),new Carte(50),
+                        new Carte(10),new Carte(20)));
 
+        assertEquals("\nLa carte 55 devrait normalement être posable sur sa carte ascendante et \n" +
+                        "la carte 25 devrait aussi être posable sur la carte ascendante du tas adverse",
+                true, j.getMesCartes().paquetDeCartesPosable(new Carte(20),new Carte(50),
+                        new Carte(56),new Carte(41)));
 
-        pVide.getCartes().add(new Carte(25));
-        assertTrue(pVide.getCarte(1).estUneCartePosable(new Carte(1),new Carte(60),
-                new Carte(60),new Carte(30),pComplet.getCartes(), 1));
-
-        pVide.getCartes().add(new Carte(45));
-        assertFalse(pVide.getCarte(1).estUneCartePosable(new Carte(1),new Carte(60),
-                new Carte(30),new Carte(1),pComplet.getCartes(), 1));
+        assertEquals("\nLa carte 25 devrait normalement être posable sur sa carte descendante et \n" +
+                        "la carte 55 devrait aussi être posable sur sa carte ascendante",
+                true, j.getMesCartes().paquetDeCartesPosable(new Carte(60),new Carte(50),
+                        new Carte(56),new Carte(41)));
     }
 }

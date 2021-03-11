@@ -64,11 +64,11 @@ public class Paquet {
      * */
     @Override
     public String toString() {
-        String tmp = "";
+        StringBuilder tmp = new StringBuilder();
         for (Carte c:cartes) {
-            tmp += c + " " ;
+            tmp.append(c).append(" ");
         }
-        return tmp;
+        return tmp.toString();
     }
 
     /**
@@ -106,10 +106,7 @@ public class Paquet {
      * @return TRUE si 2 cartes du paquet sont posables, FALSE
      * dans le cas contraire.
      */
-    public boolean paquetDeCartesPosable(Carte selfD, Carte selfA, Carte adversaireD, Carte adversaireA,
-                                         Boolean monTourDeJouer){
-        if(!Boolean.TRUE.equals(monTourDeJouer))
-            return true;
+    public boolean paquetDeCartesPosable(Carte selfD, Carte selfA, Carte adversaireD, Carte adversaireA){
         Carte cartePiocher;
         int nbTotalDeCartesJouables = 0;
         ArrayList<Carte> copieDesCartes = new ArrayList<>(cartes);
@@ -121,9 +118,11 @@ public class Paquet {
             cartePiocher = copieDesCartes.get(idx);
             if (cartePiocher.estUneCartePosable(selfDesc, selfAscend, advDesc, advAscend, copieDesCartes, idx)){
                 ++nbTotalDeCartesJouables;
-                idx = -1;
-                if (nbTotalDeCartesJouables==2)
+                idx = -1;  // Une carte est posable alors nous allons regarder à nouveau toutes nos cartes
+                if (nbTotalDeCartesJouables==2){
+                    Carte.setCarteMiseChezAdversaire(false);
                     return true;
+                }
             }
         }
         Carte.setCarteMiseChezAdversaire(false);
@@ -131,16 +130,19 @@ public class Paquet {
     }
 
     /**
-     * Vérifie si le joeur possède la carte joué
-     * @param nombre le nombre auquel nous vérifons s'il existe dans nos cartes
-     * @return vrai si la carte est en main
+     * Vérifie si le joueur possède dans sa main la carte jouée
+     * @param valeur la valeur de la carte auquel nous vérifions s'il existe dans nos cartes
+     * @return TRUE si la carte est en main, FALSE dans le cas contraire
      */
-    public boolean isCartePresenteEnMain(String nombre) {
+    public boolean isCartePresenteEnMain(String valeur) {
+        // Le boolean indiquant si la carte est dans notre main
         boolean cartePresenteEnMain = false;
+
         for (int j = 0; j <= this.getNbCartes()-1 ; j++) {
-            if (Integer.parseInt(nombre)== this.getCarte(j).getValeur())
+            if (Integer.parseInt(valeur) == this.getCarte(j).getValeur())
                 cartePresenteEnMain = true;
         }
+
         return cartePresenteEnMain;
     }
 }
