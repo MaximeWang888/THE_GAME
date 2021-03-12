@@ -9,20 +9,31 @@ import java.util.ArrayList;
  */
 public class Coup {
 
+    /** La liste de coup (par ex: "05v 04") */
     private ArrayList<String> coups;
 
+    /**
+     * Constructeur qui créé une liste de coup vide
+     */
     public Coup() {
         this.coups = new ArrayList<>();
     }
 
+    /**
+     * Retourne la liste de coup
+     * @return la liste de coup
+     */
     public ArrayList<String> getCoups() {
         return coups;
     }
 
+    /**
+     * Permet de fixer le coup
+     * @param coups le nouveau coup
+     */
     public void setCoups(ArrayList<String> coups) {
         this.coups = coups;
     }
-
 
     /**
      * Calcul le nombre de cartes à piocher
@@ -41,9 +52,9 @@ public class Coup {
             }else
                 return maPioche.getNbCartes();
         }else {
-            int retenue = 6 - mesCartes.getNbCartes();
-            if (retenue <= maPioche.getNbCartes())
-                return retenue;
+            int nbDeCartesAPiocher = 6 - mesCartes.getNbCartes();
+            if (nbDeCartesAPiocher <= maPioche.getNbCartes())
+                return nbDeCartesAPiocher;
             else
                 return maPioche.getNbCartes();
         }
@@ -51,11 +62,11 @@ public class Coup {
 
     public boolean estUnCoupValide(Paquet mesCartes) {
         for (int i = 0; i < coups.size(); i++) {
+            if (!(2 < coups.get(i).length() && coups.get(i).length() < 5))
+                return false;
             String nombre = "" + coups.get(i).charAt(0) + coups.get(i).charAt(1);
-            String signe = "";
 
-            String adverse = "";
-            if (!estUnFormatValide(i, signe, adverse))
+            if (!estUnFormatValide(i))
                 return false;
             if (!mesCartes.isCartePresenteEnMain(nombre))
                 return false;
@@ -65,28 +76,26 @@ public class Coup {
             return false;
         if (plusDeUnCoupChezAdversaire())
             return false;
-        return estUneLongueurValide();
+        return coups.size() >= 2 && coups.size() <= 6;
     }
 
     /**
      * Vérifie que la taille est bonne et le format aussi regarder si je joueur possède bien les cartes
      * @param i l'indice
-     * @param signe le signe ( ça peut-être : ^ ou v)
-     * @param adverse le symbole indiquant que la pose s'effectuera sur les cartes adverses
      * @return TRUE si c'est le bon format, FALSE dans le cas contraire
      */
-    private boolean estUnFormatValide(int i, String signe, String adverse) {
+    private boolean estUnFormatValide(int i) {
+        String signe;
+        String adverse = "";
         int longueurDeLaSaisie = coups.get(i).length();
-
-        if (longueurDeLaSaisie > 2)
-            signe = "" + coups.get(i).charAt(2);
-        if (longueurDeLaSaisie > 3)
+        signe = "" + coups.get(i).charAt(2);
+        if (longueurDeLaSaisie > 3) {
             adverse = "" + coups.get(i).charAt(3);
+        }
 
-        if (!(signe.equals("v") || signe.equals("^")))
+        if (!(signe.equals("v") || signe.equals("^"))) {
             return false;
-        if (!((longueurDeLaSaisie == 3) || (longueurDeLaSaisie == 4)))
-            return false;
+        }
         return (adverse.equals("'") || adverse.equals("") );
     }
 
@@ -123,15 +132,14 @@ public class Coup {
         return false;
     }
 
-    private boolean estUneLongueurValide() {
-        return coups.size() >= 2 && coups.size() <= 6;
-    }
+
 
     /**
      * Permet de connaître si les cartes saisies sont posables ou
      * pose les cartes saisies, autrement dit si les cartes sont posables alors
      * la fonction peutEtrePoser() sera rappeler avec pour dernier paramètre true
      * pour poser définitivement les cartes
+     * @param joueur le joueur actuelle
      * @param adversaire le joueur adverse
      * @param peutDoncEtrePoser boolean décidant de la pose des cartes
      * @return TRUE si les cartes peuvent être posé, FALSE dans le cas contraire
@@ -141,22 +149,7 @@ public class Coup {
         Carte mDescendant = new Carte(joueur.getDescendant().getValeur());
         Carte advAscendant = new Carte(adversaire.getAscendant().getValeur());
         Carte advDescendant = new Carte(adversaire.getDescendant().getValeur());
-        return checkCartesSaisie(joueur, adversaire, peutDoncEtrePoser, mAscendant,
-                mDescendant, advAscendant, advDescendant);
-    }
 
-    /**
-     *
-     * @param adversaire
-     * @param peutDoncEtrePoser
-     * @param mAscendant
-     * @param mDescendant
-     * @param advAscendant
-     * @param advDescendant
-     * @return
-     */
-    private boolean checkCartesSaisie(Joueur joueur,Joueur adversaire, boolean peutDoncEtrePoser, Carte mAscendant,
-                                      Carte mDescendant, Carte advAscendant, Carte advDescendant) {
         for(int i = 0; i < coups.size(); i++) { // 04v 05v 06v
             int nombre = Integer.parseInt(coups.get(i).substring(0,2));
             if(coups.get(i).length() <= 3){ // ton tas
@@ -170,141 +163,100 @@ public class Coup {
         return true;
     }
 
+
     /**
-     *
-     * @param peutDoncEtrePoser
-     * @param mAscendant
-     * @param mDescendant
-     * @param i
-     * @param nombre
-     * @return
+     * Permet de tester si les cartes qui ont été joué sont bien posables sur la piles qui a été choisie
+     * @param joueur jouer qui joue
+     * @param peutDoncEtrePoser boolean qui permet de choisir si on remplace la pile avec des copie ou avec les vrai valeurs
+     * @param mAscendant la pile ascendant du joueur qui joue
+     * @param mDescendant la pile descendant du joueur qui joue
+     * @param i indice du coup qui est a tester
+     * @param nombre valeur de la carte
+     * @return true si la carte et posable sinon return false
      */
     private boolean dansMesPilesDeCartes(Joueur joueur,boolean peutDoncEtrePoser, Carte mAscendant,
-                                         Carte mDescendant, int i, int nombre) {
-        if(coups.get(i).charAt(2) == '^'){ // carte ascendant
-            if (estDansCarteAscendante(joueur, peutDoncEtrePoser, mAscendant, i, nombre))
+                                         Carte mDescendant, int i , int nombre) {
+        if (coups.get(i).charAt(2) == '^'){ // carte ascendant
+            if((mAscendant.getValeur() < nombre || mAscendant.getValeur() - 10  == nombre)){
+                mAscendant.setValeur(nombre);
+                if(peutDoncEtrePoser){
+                    int idx = donneIdxRemove(coups.get(i), joueur);
+                    if (idx == -1)
+                        return false;
+                    poser(idx, joueur.getAscendant(), joueur);
+                }
                 return true;
+            }
+            return false;
         }else{ // carte descendant
-            if (estDansCarteDescendant(joueur, peutDoncEtrePoser, mDescendant, i, nombre))
+            if(mDescendant.getValeur() > nombre || (mDescendant.getValeur() + 10) == nombre){
+                mDescendant.setValeur(nombre);
+                if (peutDoncEtrePoser){
+                    int idx = donneIdxRemove(coups.get(i), joueur);
+                    if (idx == -1)
+                        return false;
+                    poser(idx, joueur.getDescendant(), joueur);
+                }
                 return true;
+            }
+            return false;
         }
-        return false;
     }
 
     /**
-     *
-     * @param adversaire
-     * @param peutDoncEtrePoser
-     * @param advAscendant
-     * @param advDescendant
-     * @param i
-     * @param nombre
-     * @return
+     * Permet de tester si les cartes qui ont été joué sont bien posables sur la piles qui a été choisie
+     * @param adversaire le joueur adversaire
+     * @param joueur jouer qui joue
+     * @param peutDoncEtrePoser boolean qui permet de choisir si on remplace la pile avec des copie ou avec les vrai valeurs
+     * @param advAscendant la pile ascendant du joueur adverse
+     * @param advDescendant la pile descendant du joueur adverse
+     * @param i indice du coup qui est a tester
+     * @param nombre valeur de la carte
+     * @return true si la carte et posable sinon return false
      */
     private boolean dansSesPilesDeCartes(Joueur adversaire, Joueur joueur, boolean peutDoncEtrePoser,
                                          Carte advAscendant, Carte advDescendant, int i, int nombre) {
         if (coups.get(i).charAt(2) == 'v'){ // carte descendant
-            if(estDansCarteAdvDescendante(adversaire, joueur, peutDoncEtrePoser, advDescendant, i, nombre))
+            if (advDescendant.getValeur() < nombre){
+                advDescendant.setValeur(nombre);
+                if (peutDoncEtrePoser){
+                    int idx = donneIdxRemove(coups.get(i), joueur);
+                    if (idx == -1)
+                        return false;
+                    poser(idx, adversaire.getDescendant(), joueur);
+                }
                 return true;
+            }
+            return false;
         } else { // carte ascendant
-            if(estDansCarteAdvAscendant(adversaire, joueur, peutDoncEtrePoser, advAscendant, i, nombre))
+            if (advAscendant.getValeur() > nombre){
+                advAscendant.setValeur(nombre);
+                if (peutDoncEtrePoser){
+                    int idx = donneIdxRemove(coups.get(i), joueur);
+                    if (idx == -1)
+                        return false;
+                    poser(idx, adversaire.getAscendant(), joueur);
+                }
                 return true;
+            }
+            return false;
         }
-        return false;
     }
 
-    /**
-     *
-     * @param adversaire
-     * @param peutDoncEtrePoser
-     * @param advAscendant
-     * @param idx
-     * @param nombre
-     * @return
-     */
-    private boolean estDansCarteAdvAscendant(Joueur adversaire, Joueur joueur, boolean peutDoncEtrePoser,
-                                             Carte advAscendant, int idx, int nombre) {
-        if (advAscendant.getValeur() > nombre){
-            advAscendant.setValeur(nombre);
-            if (peutDoncEtrePoser)
-                poser(coups.get(idx), adversaire.getAscendant(), joueur);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param adversaire
-     * @param peutDoncEtrePoser
-     * @param advDescendant
-     * @param idx
-     * @param nombre
-     * @return
-     */
-    private boolean estDansCarteAdvDescendante(Joueur adversaire, Joueur joueur, boolean peutDoncEtrePoser,
-                                               Carte advDescendant, int idx, int nombre) {
-        if (advDescendant.getValeur() < nombre){
-            advDescendant.setValeur(nombre);
-            if (peutDoncEtrePoser)
-                poser(coups.get(idx), adversaire.getDescendant(), joueur);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param peutDoncEtrePoser
-     * @param mAscendant
-     * @param idx
-     * @param nombre
-     * @return
-     */
-    private boolean estDansCarteAscendante(Joueur joueur,boolean peutDoncEtrePoser, Carte mAscendant,
-                                           int idx, int nombre) {
-        if((mAscendant.getValeur() < nombre || mAscendant.getValeur() - 10  == nombre)){
-            mAscendant.setValeur(nombre);
-            if(peutDoncEtrePoser)
-                poser(coups.get(idx), joueur.getAscendant(), joueur);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param peutDoncEtrePoser
-     * @param mDescendant
-     * @param idx
-     * @param nombre
-     * @return
-     */
-    private boolean estDansCarteDescendant(Joueur joueur, boolean peutDoncEtrePoser, Carte mDescendant,
-                                           int idx, int nombre) {
-        if(mDescendant.getValeur() > nombre || (mDescendant.getValeur() + 10) == nombre){
-            mDescendant.setValeur(nombre);
-            if (peutDoncEtrePoser)
-                poser(coups.get(idx), joueur.getDescendant(), joueur);
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Permet de poser la carte sur la bonne pile et enlève la carte de la main du joueur
-     * @param saisie la saisie d'une carte jouée par le joueur
+     * @param indice l'indice de la carte
      * @param sensDeLaPile le sens de la pile (ascendant, descendant, advAcs, advDesc)
+     * @param joueur le joueur qui joue
      */
-    private void poser(String saisie, Carte sensDeLaPile, Joueur joueur) {
-        int indice = donneIdxRemove(saisie, joueur);
+    private void poser(int indice, Carte sensDeLaPile, Joueur joueur) {
         sensDeLaPile.setValeur(joueur.getMesCartes().getCarte(indice).getValeur());
         joueur.getMesCartes().removeCarte(indice);
     }
 
-
     /**
-     * Permet de revoyer l'indice de la carte a remove
+     * Permet de retourner l'indice de la carte a remove
      * @param saisie la saisie d'une carte jouée par le joueur
      * @return l'indice de la carte a remove
      */
@@ -314,7 +266,7 @@ public class Coup {
             if(Integer.parseInt(nombre) == joueur.getMesCartes().getCarte(i).getValeur())
                 return i;
         }
-        throw new RuntimeException("ne doit jamais arriver ici");
+        return -1;
     }
 
 }
