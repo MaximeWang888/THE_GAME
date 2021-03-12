@@ -1,8 +1,10 @@
 package appli;
 
+import duel.Carte;
 import duel.Joueur;
 import duel.Noms;
 
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Scanner;
 
@@ -62,6 +64,14 @@ public class Application {
             String reJouer = sc.nextLine();
             saisieDesCartesJouer = reJouer.split(" ");
         }
+        int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
+        for (int i = 0; i < nbDeCarteAPiocher; i++){
+            if (!j.getMaPioche().estVide() && j.getMesCartes().getNbCartes() < 7)
+                j.getMesCartes().getCartes().add(j.getMaPioche().piocher());
+        }
+        j.getMesCartes().getCartes().sort(Comparator.comparing(Carte::getValeur));
+        System.out.println( j.getCoup().getCoups().size()  + " cartes posées, " +
+                nbDeCarteAPiocher + " cartes piochées ");
     }
 
     /**

@@ -64,6 +64,16 @@ public class Joueur {
         return mesCartes;
     }
 
+    public Paquet getMaPioche() {
+        return maPioche;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Coup getCoup() { return coup; }
+
     /**
      * Annonce la carte ascendante
      * @return la carte de la pile ascendant
@@ -175,14 +185,6 @@ public class Joueur {
         if (!coup.peutEtrePoser(this, adversaire, false))
             return false;
         coup.peutEtrePoser(this, adversaire,true);
-        int nbDeCarteAPiocher = coup.calculCartePiocher(maPioche, mesCartes);
-        for (int i = 0; i < nbDeCarteAPiocher; i++){
-            if (!maPioche.estVide() && mesCartes.getNbCartes() < 7)
-                mesCartes.getCartes().add(maPioche.piocher());
-        }
-        mesCartes.getCartes().sort(Comparator.comparing(Carte::getValeur));
-        System.out.println( coup.getCoups().size()  + " cartes posées, " +
-                nbDeCarteAPiocher + " cartes piochées ");
         return true;
     }
 

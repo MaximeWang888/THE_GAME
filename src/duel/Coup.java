@@ -98,7 +98,7 @@ public class Coup {
     private boolean plusDeUnCoupChezAdversaire() {
         int coupJouerSurLeTasAdverse = 0;
         for (int i = 0; i < coups.size() ; i++) {
-            if(coups.get(i).length()>3)
+            if(coups.get(i).length()==4)
                 ++coupJouerSurLeTasAdverse;
             if(coupJouerSurLeTasAdverse > 1)
                 return true;

@@ -71,8 +71,9 @@ public class PaquetTest {
         // GIVEN
         Joueur j = new Joueur(Noms.NORD);
         // Retire toutes ses cartes
-        for (int i = 0; i < j.getMesCartes().getNbCartes()-1; i++)
-            j.getMesCartes().removeCarte(i);
+        int nbCartes = j.getMesCartes().getNbCartes();
+        for (int i = 0; i < nbCartes; i++)
+            j.getMesCartes().removeCarte(0);
         // Ajoute quelques cartes
         j.getMesCartes().getCartes().add(new Carte(25));
         j.getMesCartes().getCartes().add(new Carte(42));

@@ -22,7 +22,33 @@ public class JoueurTest {
         Joueur jS = new Joueur(Noms.SUD);
 
         // THEN
-        assertNotEquals("Les noms des joueurs doivent être différents", jN.toString(), jS.toString());
+        assertNotEquals("Les noms des joueurs doivent être différents", jN.getNom(), jS.getNom());
+    }
+
+    @Test
+    public void testGetCoup() {
+        // GIVEN
+        Joueur jS = new Joueur(Noms.SUD);
+        Joueur jN = new Joueur(Noms.NORD);
+
+        // THEN
+        assertEquals(jS.getCoup().getCoups(),jN.getCoup().getCoups());
+
+        // WHEN
+        jS.getCoup().getCoups().add("555");
+
+        // THEN
+        assertNotEquals(jS.getCoup().getCoups(),jN.getCoup().getCoups());
+    }
+
+    @Test
+    public void testGetMaPioche() {
+        // GIVEN
+        Joueur jS = new Joueur(Noms.SUD);
+        Joueur jN = new Joueur(Noms.NORD);
+
+        // THEN
+        assertNotEquals(jS.getMaPioche(),jN.getMaPioche());
     }
 
     @Test
@@ -101,36 +127,80 @@ public class JoueurTest {
 
     @Test
     public void testPeutPoserDesCartes() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
         Joueur jS = new Joueur(Noms.SUD);
-        assertTrue(jN.peutPoserDesCartes(jS) && jS.peutPoserDesCartes(jN));
+
+        // THEN
+        assertEquals("Début de partie donc on devrait toujours pouvoir posé des cartes",
+                true, jN.peutPoserDesCartes(jS));
+        assertEquals("Début de partie donc on devrait toujours pouvoir posé des cartes",
+                true, jS.peutPoserDesCartes(jN));
+
+        // WHEN
+        // Retire toutes ses cartes
+        int nbCartes = jS.getMesCartes().getNbCartes();
+        for (int i = 0; i < nbCartes; i++)
+            jS.getMesCartes().removeCarte(0);
+        jN.ajoute(new Carte(40));
+        jN.ajoute(new Carte(25));
+        jN.ajoute(new Carte(20));
+
+        jN.getAscendant().setValeur(60);
+        jN.getDescendant().setValeur(1);
+
+        // THEN
+        assertEquals(false,jN.peutPoserDesCartes(jS));
     }
 
     @Test
     public void testEstUneSaisiValide() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
         Joueur jS = new Joueur(Noms.SUD);
         jN.ajoute(new Carte(5));
         jN.ajoute(new Carte(6));
 
-        String[] saisiDoublon = "05^ 05v".split(" ");
-        assertFalse(jN.estUneSaisiValide(saisiDoublon,jS));
+        // WHEN
+        String[] saisiPasValide = "05^' 06^".split(" ");
 
-        String[] saisiPlusUnCoupAdv = "05^' 06^'".split(" ");
-        assertFalse(jN.estUneSaisiValide(saisiPlusUnCoupAdv,jS));
+        // THEN
+        assertEquals(false,jN.estUneSaisiValide(saisiPasValide,jS));
+
+        // WHEN
+        String[] saisiNimporteQuoi = "opfjezojfzeop dsfds".split(" ");
+
+        // THEN
+        assertEquals(false,jN.estUneSaisiValide(saisiNimporteQuoi,jS));
+
+        // WHEN
+        String[] saisiValide = "05^ 06^".split(" ");
+
+        // THEN
+        assertEquals(true,jN.estUneSaisiValide(saisiValide,jS));
 
 
-        String[] saisiF = "05 1515 fff 66".split(" ");
-        assertFalse(jN.estUneSaisiValide(saisiF,jS));
+
     }
 
     @Test
     public void testAjoute() {
+        // GIVEN
         Joueur jN = new Joueur(Noms.NORD, true);
-        String avant = jN.toString();
-        jN.ajoute(new Carte(99));
-        String apres = jN.toString();
-        assertTrue (!(avant.equals(apres)));
+        Joueur jS = new Joueur(Noms.SUD);
+        // Retire toutes ses cartes
+        int nbCartes = jS.getMesCartes().getNbCartes();
+        for (int i = 0; i < nbCartes; i++){
+            jN.getMesCartes().removeCarte(0);
+            jS.getMesCartes().removeCarte(0);
+        }
+
+        // WHEN
+        jN.ajoute(new Carte(900));
+        jS.ajoute(new Carte(900));
+
+        // THEN
+        assertEquals(jS.getMesCartes().getCarte(0).getValeur(),jN.getMesCartes().getCarte(0).getValeur());
     }
 
 }
