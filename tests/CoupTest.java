@@ -11,7 +11,11 @@ import java.util.Collections;
 
 import static org.junit.Assert.*;
 
-
+/**
+ * Les tests sur la classe Coup
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public class CoupTest {
 
     @Test
