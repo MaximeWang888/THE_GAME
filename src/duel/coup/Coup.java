@@ -8,7 +8,7 @@ import duel.interfaces.IPaquet;
 
 /**
  * Modélise un coup joué par un joueur.
- * @author  Maxime Wang
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
  * @version 1.1
  */
 public class Coup extends ACoup {

@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Modélise une carte de jeu.
-    * @author  Maxime Wang
+    * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
     * @version 1.1
  */
 public class Carte extends ACarte {

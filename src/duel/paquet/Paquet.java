@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Modélise un paquet de cartes.
-    * @author  Maxime Wang
+    * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
     * @version 1.1
  */
 public class Paquet extends APaquet {
