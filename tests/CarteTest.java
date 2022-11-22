@@ -1,4 +1,6 @@
 import duel.carte.Carte;
+import duel.interfaces.ICarte;
+import duel.interfaces.IJoueur;
 import duel.joueur.Joueur;
 import duel.Nom;
 import org.junit.Test;
@@ -16,7 +18,7 @@ public class CarteTest {
     @Test
     public void testCarte() {
         // GIVEN
-        Carte c1 = new Carte(6);
+        ICarte c1 = new Carte(6);
 
         // THEN
         assertEquals("Les cartes comparées doivent être identiques", c1.toString(), c1.toString());
@@ -25,8 +27,8 @@ public class CarteTest {
     @Test
     public void testGetValeur() {
         // GIVEN
-        Carte c1 = new Carte(5);
-        Carte c2 = new Carte(6);
+        ICarte c1 = new Carte(5);
+        ICarte c2 = new Carte(6);
 
         // THEN
         assertNotEquals("Les deux cartes ne doivent pas avoir la même valeur", c1.getValeur(), c2.getValeur());
@@ -35,8 +37,8 @@ public class CarteTest {
     @Test
     public void testSetValeur() {
         // GIVEN
-        Carte c1 = new Carte(5);
-        Carte c2 = new Carte(5);
+        ICarte c1 = new Carte(5);
+        ICarte c2 = new Carte(5);
 
         // THEN
         assertEquals("Les deux cartes doivent avoir la même valeur de carte", c1.getValeur(), c2.getValeur());
@@ -52,7 +54,7 @@ public class CarteTest {
     @Test
     public void testEstUneCartePosable() {
         // GIVEN
-        Joueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur(Nom.NORD);
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)

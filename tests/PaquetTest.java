@@ -1,4 +1,6 @@
 import duel.carte.Carte;
+import duel.interfaces.IJoueur;
+import duel.interfaces.IPaquet;
 import duel.joueur.Joueur;
 import duel.Nom;
 import duel.paquet.Paquet;
@@ -11,8 +13,8 @@ public class PaquetTest {
     @Test
     public void testPaquet() {
         // GIVEN
-        Paquet pVide = new Paquet();
-        Paquet pComplet = new Paquet(true);
+        IPaquet pVide = new Paquet();
+        IPaquet pComplet = new Paquet(true);
 
         // THEN
         assertNotEquals("Le contenu du paquet doit être différent", pVide.toString(), pComplet.toString());
@@ -21,7 +23,7 @@ public class PaquetTest {
     @Test
     public void testGetCarte() {
         // GIVEN
-        Joueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur(Nom.NORD);
 
         // WHEN
         j.getMesCartes().getCartes().add(new Carte(500));
@@ -34,7 +36,7 @@ public class PaquetTest {
     @Test
     public void testGetNbDeCarte() {
         // GIVEN
-        Paquet pComplet = new Paquet(true);
+        IPaquet pComplet = new Paquet(true);
 
         // THEN
         assertEquals("Le nombre de cartes d'un paquet complet doit être égal à 58",
@@ -44,7 +46,7 @@ public class PaquetTest {
     @Test
     public void testPiocher() {
         // GIVEN
-        Paquet p = new Paquet(true);
+        IPaquet p = new Paquet(true);
 
         // THEN
         assertNotEquals("Les cartes piochées doivent être différentes", p.piocher(), p.piocher());
@@ -53,7 +55,7 @@ public class PaquetTest {
     @Test
     public void testEstVide() {
         // GIVEN
-        Paquet pVide = new Paquet();
+        IPaquet pVide = new Paquet();
 
         // THEN
         assertTrue(pVide.estVide());
@@ -62,7 +64,7 @@ public class PaquetTest {
     @Test
     public void testRemoveCarte() {
         // GIVEN
-        Paquet pComplet = new Paquet(true);
+        IPaquet pComplet = new Paquet(true);
 
         // THEN
         assertNotEquals("Les cartes retirés du paquet doivent avoir une valeur différente",
@@ -72,7 +74,7 @@ public class PaquetTest {
     @Test
     public void testPaquetDeCartesPosable() {
         // GIVEN
-        Joueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur(Nom.NORD);
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)
@@ -95,7 +97,7 @@ public class PaquetTest {
     @Test
     public void testIsCarteEnMain() {
         // GIVEN
-        Joueur jV = new Joueur(Nom.NORD);
+        IJoueur jV = new Joueur(Nom.NORD);
 
         // WHEN
         jV.ajoute(new Carte(100));

@@ -1,4 +1,5 @@
 import duel.carte.Carte;
+import duel.interfaces.IJoueur;
 import duel.joueur.Joueur;
 import duel.Nom;
 import org.junit.Test;
@@ -11,8 +12,8 @@ public class JoueurTest {
     @Test
     public void testJoueur() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD);
-        Joueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur(Nom.SUD);
 
         // THEN
         assertNotEquals("Le contenu des joueurs doit être différent", jN.toString(), jS.toString());
@@ -21,8 +22,8 @@ public class JoueurTest {
     @Test
     public void testGetNom() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jS = new Joueur(Nom.SUD);
 
         // THEN
         assertNotEquals("Les noms des joueurs doivent être différents", jN.getNom(), jS.getNom());
@@ -31,8 +32,8 @@ public class JoueurTest {
     @Test
     public void testGetCoup() {
         // GIVEN
-        Joueur jS = new Joueur(Nom.SUD);
-        Joueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD);
 
         // THEN
         assertEquals(jS.getCoup().getCoups(), jN.getCoup().getCoups());
@@ -47,8 +48,8 @@ public class JoueurTest {
     @Test
     public void testGetMaPioche() {
         // GIVEN
-        Joueur jS = new Joueur(Nom.SUD);
-        Joueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD);
 
         // THEN
         assertNotEquals(jS.getMaPioche(), jN.getMaPioche());
@@ -57,8 +58,8 @@ public class JoueurTest {
     @Test
     public void testGetAscendant() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jS = new Joueur(Nom.SUD);
 
         // THEN
         assertEquals("La valeur de la carte ascendente doit être identique à celle de l'adversaire" +
@@ -68,8 +69,8 @@ public class JoueurTest {
     @Test
     public void testGetDescendant() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jS = new Joueur(Nom.SUD);
 
         // THEN
         assertEquals("La valeur de la carte descendante doit être identique à celle de l'adversaire" +
@@ -79,7 +80,7 @@ public class JoueurTest {
     @Test
     public void testGetNbDeMaPioche() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jN = new Joueur(Nom.NORD, true);
 
         // THEN
         assertEquals("Le nombre de cartes de la pioche du joueur doit être égal à 52",
@@ -89,7 +90,7 @@ public class JoueurTest {
     @Test
     public void testGetNbDeMesCartes() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jN = new Joueur(Nom.NORD, true);
 
         // THEN
         assertEquals("Le nombre en cartes en main du joueur doit être égal à 6",
@@ -99,8 +100,8 @@ public class JoueurTest {
     @Test
     public void testAMonTourDeJouer() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jS = new Joueur(Nom.SUD);
 
         // THEN
         assertEquals(false, jS.aMonTourDeJouer(jN));
@@ -131,8 +132,8 @@ public class JoueurTest {
     @Test
     public void testPeutPoserDesCartes() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jS = new Joueur(Nom.SUD);
 
         // THEN
         assertEquals("Début de partie donc on devrait toujours pouvoir posé des cartes",

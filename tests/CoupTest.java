@@ -1,6 +1,9 @@
 import duel.*;
 import duel.carte.Carte;
 import duel.coup.Coup;
+import duel.interfaces.ICoup;
+import duel.interfaces.IJoueur;
+import duel.interfaces.IPaquet;
 import duel.joueur.Joueur;
 import duel.paquet.Paquet;
 import org.junit.Test;
@@ -21,8 +24,8 @@ public class CoupTest {
     @Test
     public void testCoup() {
         // GIVEN
-        Coup c1 = new Coup();
-        Coup c2 = new Coup();
+        ICoup c1 = new Coup();
+        ICoup c2 = new Coup();
 
         // THEN
         assertEquals(c1.getCoups(), c2.getCoups());
@@ -37,8 +40,8 @@ public class CoupTest {
     @Test
     public void testEstUnCoupValide() {
         // GIVEN
-        Joueur j = new Joueur(Nom.NORD);
-        Coup c1 = new Coup();
+        IJoueur j = new Joueur(Nom.NORD);
+        ICoup c1 = new Coup();
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)
@@ -90,9 +93,9 @@ public class CoupTest {
     @Test
     public void testCalculCartePiocher() {
         // GIVEN
-        Coup c = new Coup();
-        Paquet pioche = new Paquet(true);
-        Paquet mesCartes = new Paquet();
+        ICoup c = new Coup();
+        IPaquet pioche = new Paquet(true);
+        IPaquet mesCartes = new Paquet();
 
         // WHEN
         String cartesJouer = "42^ 25^'";
@@ -131,8 +134,8 @@ public class CoupTest {
     @Test
     public void testPeutEtrePoser() {
         // GIVEN
-        Joueur jS = new Joueur(Nom.SUD);
-        Joueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur(Nom.NORD);
 
         // THEN
         assertTrue(jS.getCoup().peutEtrePoser(jS, jN, false));
