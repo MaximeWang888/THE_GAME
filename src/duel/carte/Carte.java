@@ -1,54 +1,25 @@
-package duel;
+package duel.carte;
+
+import duel.interfaces.ICarte;
 
 import java.util.List;
 
 /**
  * Modélise une carte de jeu.
-    * @author  Fabien Rondan, Maxime Wang
-    * @version 1.0
+    * @author  Maxime Wang
+    * @version 1.1
  */
-public class Carte {
+public class Carte extends ACarte {
 
-    /**
-     * Numéro/valeur de la carte de 1 à 60 (1,2,3,...,60)
-     */
-    private Integer valeur;
-
-    /**
-     * Indique si une carte d'un paquet a déjà été mise dans le tas adverse
-     */
-    private static boolean carteMiseChezAdversaire = false;
+    final int REGLEDES10 = 10;
 
     /**
      * Constructeur à partir d'une valeur
+     *
      * @param val la valeur de la nouvelle carte
      */
-    public Carte(int val){
-        this.valeur = val;
-    }
-
-    /**
-     *  Permet de savoir la valeur de la carte
-     * @return la valeur de la carte
-     */
-    public Integer getValeur() {
-        return valeur;
-    }
-
-    /**
-     * Permet de fixer une nouvelle valeur à la carte
-     * @param valeur la nouvelle valeur de la carte
-     */
-    public void setValeur(int valeur) {
-        this.valeur = valeur;
-    }
-
-    /**
-     * Un boolean indiquant si la carte a déjà été mise chez l'adverversaire
-     * @param value True or False
-     */
-    public static void setCarteMiseChezAdversaire(boolean value) {
-        carteMiseChezAdversaire = value;
+    public Carte(int val) {
+        super(val);
     }
 
     /**
@@ -58,21 +29,12 @@ public class Carte {
      */
     @Override
     public String toString() {
-        return String.format("%02d", valeur);
+        return String.format("%02d", getValeur());
     }
 
-    /**
-     * Permet de vérifier si c'est une carte posable
-     * dans son propre tas ou dans le tas adverse
-     * @param selfD la carte descendant de notre tas
-     * @param selfA la carte ascendant de notre tas
-     * @param adversaireD la carte descendant de l'adversaire
-     * @param adversaireA la carte ascendant de l'adversaire
-     * @return TRUE si c'est une carte posable sur les cartes à nous ou sur les cartes adverses,
-     * FALSE dans le cas contraire
-     */
-    public boolean estUneCartePosable(Carte selfD, Carte selfA, Carte adversaireD, Carte adversaireA,
-                                      List<Carte> mesCartes, int idxCartePiocher) {
+    @Override
+    public boolean estUneCartePosable(ICarte selfD, ICarte selfA, ICarte adversaireD, ICarte adversaireA,
+                                      List<ICarte> mesCartes, int idxCartePiocher) {
         // dd
         if (estPosableDansLaPileANous(selfD, selfA, mesCartes, idxCartePiocher))
             return true;
@@ -89,14 +51,14 @@ public class Carte {
      * @return TRUE si c'est une carte posable sur nos cartes, FALSE
      * dans le cas contraire
      */
-    private boolean estPosableDansLaPileANous(Carte selfD, Carte selfA, List<Carte> mesCartes, int idxCartePiocher) {
+    private boolean estPosableDansLaPileANous(ICarte selfD, ICarte selfA, List<ICarte> mesCartes, int idxCartePiocher) {
         if(this.estPosableDansMaPileA(selfA)){
-            selfA.setValeur(this.valeur);
+            selfA.setValeur(getValeur());
             mesCartes.remove(idxCartePiocher);
             return true;
         }
         if(this.estPosableDansMaPileD(selfD)){
-            selfD.setValeur(this.valeur);
+            selfD.setValeur(getValeur());
             mesCartes.remove(idxCartePiocher);
             return true;
         }
@@ -112,17 +74,17 @@ public class Carte {
      * @return TRUE si c'est une carte posable sur les cartes adverses, FALSE
      * dans le cas contraire
      */
-    private boolean estPosableDansLaPileAdverse(Carte adversaireD, Carte adversaireA, List<Carte> mesCartes,
+    private boolean estPosableDansLaPileAdverse(ICarte adversaireD, ICarte adversaireA, List<ICarte> mesCartes,
                                                 int idxCartePiocher) {
         if(this.estPosableDansSaPileA(adversaireA)){
             setCarteMiseChezAdversaire(true);
-            adversaireA.setValeur(this.valeur);
+            adversaireA.setValeur(getValeur());
             mesCartes.remove(idxCartePiocher);
             return true;
         }
         if(this.estPosableDansSaPileD(adversaireD)){
             setCarteMiseChezAdversaire(true);
-            adversaireD.setValeur(this.valeur);
+            adversaireD.setValeur(getValeur());
             mesCartes.remove(idxCartePiocher);
             return true;
         }
@@ -135,8 +97,8 @@ public class Carte {
      * @return TRUE si c'est une carte posable sur l'ancienne carte ascendante, FALSE
      * dans le cas contraire
      */
-    private boolean estPosableDansMaPileA(Carte self){
-       return this.valeur > self.valeur || this.valeur + 10 == self.valeur;
+    private boolean estPosableDansMaPileA(ICarte self){
+       return getValeur() > self.getValeur() || getValeur() + REGLEDES10 == self.getValeur();
     }
 
     /**
@@ -145,8 +107,8 @@ public class Carte {
      * @return TRUE si c'est une carte posable sur l'ancienne carte descendante, FALSE
      * dans le cas contraire
      */
-    private boolean estPosableDansMaPileD(Carte self){
-        return this.valeur < self.valeur || this.valeur - 10 == self.valeur;
+    private boolean estPosableDansMaPileD(ICarte self){
+        return getValeur() < self.getValeur() || getValeur() - REGLEDES10 == self.getValeur();
     }
 
     /**
@@ -155,8 +117,8 @@ public class Carte {
      * @return TRUE si c'est une carte posable sur l'ancienne carte ascendante de l'adversaire, FALSE
      * dans le cas contraire
      */
-    private boolean estPosableDansSaPileA(Carte adversaireA) {
-        return this.valeur < adversaireA.valeur && !carteMiseChezAdversaire;
+    private boolean estPosableDansSaPileA(ICarte adversaireA) {
+        return getValeur() < adversaireA.getValeur() && !isCarteMiseChezAdversaire();
     }
 
     /**
@@ -165,7 +127,7 @@ public class Carte {
      * @return TRUE si c'est une carte posable sur l'ancienne carte descendante de l'adversaire, FALSE
      * dans le cas contraire
      */
-    private boolean estPosableDansSaPileD(Carte adversaireD) {
-        return this.valeur > adversaireD.valeur && !carteMiseChezAdversaire;
+    private boolean estPosableDansSaPileD(ICarte adversaireD) {
+        return getValeur() > adversaireD.getValeur() && !isCarteMiseChezAdversaire();
     }
 }

@@ -1,8 +1,8 @@
 package appli;
 
-import duel.Carte;
-import duel.Joueur;
-import duel.Noms;
+import duel.Nom;
+import duel.interfaces.ICarte;
+import duel.joueur.Joueur;
 
 import java.util.Comparator;
 import java.util.Formatter;
@@ -11,8 +11,8 @@ import java.util.Scanner;
 /**
  * Modélise l'application lancant une
  * partie entre deux joueurs.
-    * @author  Fabien Rondan, Maxime Wang
-    * @version 1.0
+    * @author  Maxime Wang
+    * @version 1.1
  */
 public class Application {
 
@@ -24,8 +24,8 @@ public class Application {
      */
     public static void main(String[] args) {
         // Création des joueurs NORD et SUD
-        Joueur jN = new Joueur(Noms.NORD, true);
-        Joueur jS = new Joueur(Noms.SUD);
+        Joueur jN = new Joueur(Nom.NORD, true);
+        Joueur jS = new Joueur(Nom.SUD);
 
         // Tant que le jeu n'est pas terminé
         while ((jN.aDesCartes() && jS.aDesCartes()) &&
@@ -69,7 +69,7 @@ public class Application {
             if (!j.getMaPioche().estVide() && j.getMesCartes().getNbCartes() < 7)
                 j.getMesCartes().getCartes().add(j.getMaPioche().piocher());
         }
-        j.getMesCartes().getCartes().sort(Comparator.comparing(Carte::getValeur));
+        j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
         System.out.println( j.getCoup().getCoups().size()  + " cartes posées, " +
                 nbDeCarteAPiocher + " cartes piochées ");
     }

@@ -1,7 +1,10 @@
-package duel;
+import duel.carte.Carte;
+import duel.joueur.Joueur;
+import duel.Nom;
+import duel.paquet.Paquet;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
-import org.junit.Test;
 
 public class PaquetTest {
 
@@ -9,7 +12,7 @@ public class PaquetTest {
     public void testPaquet() {
         // GIVEN
         Paquet pVide = new Paquet();
-        Paquet pComplet = new Paquet(true) ;
+        Paquet pComplet = new Paquet(true);
 
         // THEN
         assertNotEquals("Le contenu du paquet doit être différent", pVide.toString(), pComplet.toString());
@@ -18,7 +21,7 @@ public class PaquetTest {
     @Test
     public void testGetCarte() {
         // GIVEN
-        Joueur j = new Joueur(Noms.NORD);
+        Joueur j = new Joueur(Nom.NORD);
 
         // WHEN
         j.getMesCartes().getCartes().add(new Carte(500));
@@ -69,7 +72,7 @@ public class PaquetTest {
     @Test
     public void testPaquetDeCartesPosable() {
         // GIVEN
-        Joueur j = new Joueur(Noms.NORD);
+        Joueur j = new Joueur(Nom.NORD);
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)
@@ -81,18 +84,18 @@ public class PaquetTest {
 
         // THEN
         assertEquals("Qu'une seule carte serait posable dans le tas adverse, on s'attend " +
-                        "qu'il nous retourne FALSE", false, j.getMesCartes().paquetDeCartesPosable(
-                                new Carte(1),new Carte(60), new Carte(1),new Carte(60)));
+                "qu'il nous retourne FALSE", false, j.getMesCartes().paquetDeCartesPosable(
+                new Carte(1), new Carte(60), new Carte(1), new Carte(60)));
         assertEquals("\nLa carte 55 devrait normalement être posable sur sa carte ascendante et \n" +
-                "la carte 25 devrait aussi être posable sur la carte descendante du tas adverse",
-                true, j.getMesCartes().paquetDeCartesPosable(new Carte(20),new Carte(50),
-                new Carte(10),new Carte(20)));
+                        "la carte 25 devrait aussi être posable sur la carte descendante du tas adverse",
+                true, j.getMesCartes().paquetDeCartesPosable(new Carte(20), new Carte(50),
+                        new Carte(10), new Carte(20)));
     }
 
     @Test
     public void testIsCarteEnMain() {
         // GIVEN
-        Joueur jV = new Joueur(Noms.NORD);
+        Joueur jV = new Joueur(Nom.NORD);
 
         // WHEN
         jV.ajoute(new Carte(100));

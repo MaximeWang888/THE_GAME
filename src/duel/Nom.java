@@ -3,6 +3,6 @@ package duel;
 /**
  * Enumeration des noms des joueurs.
  */
-public enum Noms {
+public enum Nom {
     NORD, SUD
 }

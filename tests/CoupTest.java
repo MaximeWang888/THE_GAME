@@ -1,11 +1,15 @@
-package duel;
-
-import static org.junit.Assert.*;
+import duel.*;
+import duel.carte.Carte;
+import duel.coup.Coup;
+import duel.joueur.Joueur;
+import duel.paquet.Paquet;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
+import static org.junit.Assert.*;
 
 
 public class CoupTest {
@@ -17,19 +21,19 @@ public class CoupTest {
         Coup c2 = new Coup();
 
         // THEN
-        assertEquals(c1.getCoups(),c2.getCoups());
+        assertEquals(c1.getCoups(), c2.getCoups());
 
         // WHEN
         c1.setCoups(new ArrayList<>(Collections.singleton("hello")));
 
         // THEN
-        assertNotEquals(c1.getCoups(),c2.getCoups());
+        assertNotEquals(c1.getCoups(), c2.getCoups());
     }
 
     @Test
     public void testEstUnCoupValide() {
         // GIVEN
-        Joueur j = new Joueur(Noms.NORD);
+        Joueur j = new Joueur(Nom.NORD);
         Coup c1 = new Coup();
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
@@ -80,7 +84,7 @@ public class CoupTest {
     }
 
     @Test
-    public void testCalculCartePiocher(){
+    public void testCalculCartePiocher() {
         // GIVEN
         Coup c = new Coup();
         Paquet pioche = new Paquet(true);
@@ -105,7 +109,7 @@ public class CoupTest {
         // WHEN
         // Retire toutes les cartes en laissant une carte
         int nbCartes = pioche.getNbCartes();
-        for (int i = 0; i < nbCartes-1 ; i++)
+        for (int i = 0; i < nbCartes - 1; i++)
             pioche.removeCarte(0);
 
         // THEN
@@ -121,10 +125,10 @@ public class CoupTest {
     }
 
     @Test
-    public void testPeutEtrePoser(){
+    public void testPeutEtrePoser() {
         // GIVEN
-        Joueur jS = new Joueur(Noms.SUD);
-        Joueur jN = new Joueur(Noms.NORD);
+        Joueur jS = new Joueur(Nom.SUD);
+        Joueur jN = new Joueur(Nom.NORD);
 
         // THEN
         assertTrue(jS.getCoup().peutEtrePoser(jS, jN, false));
