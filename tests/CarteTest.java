@@ -6,6 +6,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ * Les tests sur la classe Carte
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public class CarteTest {
 
     @Test
