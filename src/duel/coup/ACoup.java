@@ -6,6 +6,11 @@ import duel.interfaces.IPaquet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Modélise un coup en général
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public abstract class ACoup implements ICoup
 {
     /** La liste de coup (par ex: "05v 04") */

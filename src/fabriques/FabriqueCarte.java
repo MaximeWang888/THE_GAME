@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Modélise une fabrique d'une carte
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public class FabriqueCarte implements IFabriqueCarte {
 
     @Override

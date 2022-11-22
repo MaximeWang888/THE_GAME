@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Modélise une fabrique d'un joueur
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public class FabriqueJoueur implements IFabriqueJoueur {
 
     @Override

@@ -2,6 +2,11 @@ package duel.carte;
 
 import duel.interfaces.ICarte;
 
+/**
+ * Modélise une carte en général
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public abstract class ACarte implements ICarte {
 
     /**

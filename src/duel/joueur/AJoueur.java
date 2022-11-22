@@ -11,6 +11,11 @@ import duel.paquet.Paquet;
 
 import java.util.Comparator;
 
+/**
+ * Modélise un joueur en général
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
+ */
 public abstract class AJoueur implements IJoueur {
 
     /** Les cartes en main du joueur */

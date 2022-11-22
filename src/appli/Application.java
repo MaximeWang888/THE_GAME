@@ -10,10 +10,9 @@ import java.util.Formatter;
 import java.util.Scanner;
 
 /**
- * Modélise l'application lancant une
- * partie entre deux joueurs.
-    * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
-    * @version 1.1
+ * Modélise l'application lancant une partie entre deux joueurs.
+ * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN
+ * @version 1.1
  */
 public class Application {
 
