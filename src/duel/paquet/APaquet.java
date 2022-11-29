@@ -87,14 +87,9 @@ public abstract class APaquet implements IPaquet {
     @Override
     public boolean isCartePresenteEnMain(String valeur) {
         // Le boolean indiquant si la carte est dans notre main
-        boolean cartePresenteEnMain = false;
 
-        for (int j = 0; j <= this.getNbCartes()-1 ; j++) {
-            if (Integer.parseInt(valeur) == this.getCarte(j).getValeur())
-                cartePresenteEnMain = true;
-        }
 
-        return cartePresenteEnMain;
+        return true;
     }
 
 }

@@ -29,17 +29,13 @@ public class Carte extends ACarte {
      */
     @Override
     public String toString() {
-        return String.format("%02d", getValeur());
+        return null;
     }
 
     @Override
     public boolean estUneCartePosable(ICarte selfD, ICarte selfA, ICarte adversaireD, ICarte adversaireA,
                                       List<ICarte> mesCartes, int idxCartePiocher) {
-        // dd
-        if (estPosableDansLaPileANous(selfD, selfA, mesCartes, idxCartePiocher))
-            return true;
-        // dd
-        return estPosableDansLaPileAdverse(adversaireD, adversaireA, mesCartes, idxCartePiocher);
+        return true;
     }
 
     /**
@@ -52,17 +48,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansLaPileANous(ICarte selfD, ICarte selfA, List<ICarte> mesCartes, int idxCartePiocher) {
-        if(this.estPosableDansMaPileA(selfA)){
-            selfA.setValeur(getValeur());
-            mesCartes.remove(idxCartePiocher);
-            return true;
-        }
-        if(this.estPosableDansMaPileD(selfD)){
-            selfD.setValeur(getValeur());
-            mesCartes.remove(idxCartePiocher);
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -76,19 +62,7 @@ public class Carte extends ACarte {
      */
     private boolean estPosableDansLaPileAdverse(ICarte adversaireD, ICarte adversaireA, List<ICarte> mesCartes,
                                                 int idxCartePiocher) {
-        if(this.estPosableDansSaPileA(adversaireA)){
-            setCarteMiseChezAdversaire(true);
-            adversaireA.setValeur(getValeur());
-            mesCartes.remove(idxCartePiocher);
-            return true;
-        }
-        if(this.estPosableDansSaPileD(adversaireD)){
-            setCarteMiseChezAdversaire(true);
-            adversaireD.setValeur(getValeur());
-            mesCartes.remove(idxCartePiocher);
-            return true;
-        }
-        return false;
+        return true;
     }
 
     /**
@@ -98,7 +72,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansMaPileA(ICarte self){
-       return getValeur() > self.getValeur() || getValeur() + REGLEDES10 == self.getValeur();
+        return true;
     }
 
     /**
@@ -108,7 +82,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansMaPileD(ICarte self){
-        return getValeur() < self.getValeur() || getValeur() - REGLEDES10 == self.getValeur();
+        return true;
     }
 
     /**
@@ -118,7 +92,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansSaPileA(ICarte adversaireA) {
-        return getValeur() < adversaireA.getValeur() && !isCarteMiseChezAdversaire();
+        return true;
     }
 
     /**
@@ -128,6 +102,6 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansSaPileD(ICarte adversaireD) {
-        return getValeur() > adversaireD.getValeur() && !isCarteMiseChezAdversaire();
+        return true;
     }
 }

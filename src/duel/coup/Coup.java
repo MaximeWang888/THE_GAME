@@ -17,22 +17,7 @@ public class Coup extends ACoup {
 
     @Override
     public boolean estUnCoupValide(IPaquet mesCartes) {
-        for (int i = 0; i < getCoups().size(); i++) {
-            if (!(2 < getCoups().get(i).length() && getCoups().get(i).length() < 5))
-                return false;
-            String nombre = "" + getCoups().get(i).charAt(0) + getCoups().get(i).charAt(1);
-
-            if (!estUnFormatValide(i))
-                return false;
-            if (!mesCartes.isCartePresenteEnMain(nombre))
-                return false;
-        }
-
-        if (existeDoublon())
-            return false;
-        if (plusDeUnCoupChezAdversaire())
-            return false;
-        return getCoups().size() >= 2 && getCoups().size() <= 6;
+       return true;
     }
 
     /**
@@ -41,18 +26,7 @@ public class Coup extends ACoup {
      * @return TRUE si c'est le bon format, FALSE dans le cas contraire
      */
     private boolean estUnFormatValide(int i) {
-        String signe;
-        String adverse = "";
-        int longueurDeLaSaisie = getCoups().get(i).length();
-        signe = "" + getCoups().get(i).charAt(2);
-        if (longueurDeLaSaisie > 3) {
-            adverse = "" + getCoups().get(i).charAt(3);
-        }
-
-        if (!(signe.equals("v") || signe.equals("^"))) {
-            return false;
-        }
-        return (adverse.equals("'") || adverse.equals("") );
+       return true;
     }
 
     /**
@@ -61,13 +35,6 @@ public class Coup extends ACoup {
      * dans le cas contraire
      */
     private boolean plusDeUnCoupChezAdversaire() {
-        int coupJouerSurLeTasAdverse = 0;
-        for (int i = 0; i < getCoups().size() ; i++) {
-            if(getCoups().get(i).length()==4)
-                ++coupJouerSurLeTasAdverse;
-            if(coupJouerSurLeTasAdverse > 1)
-                return true;
-        }
         return false;
     }
 
@@ -77,34 +44,11 @@ public class Coup extends ACoup {
      * dans le cas contraire
      */
     private boolean existeDoublon() {
-        for (int i = 0; i < getCoups().size() - 1; i++) {
-            String mot1 = "" + getCoups().get(i).charAt(0) + getCoups().get(i).charAt(1);
-            for (int j = i+1; j < getCoups().size(); j++) {
-                String mot2 = "" + getCoups().get(j).charAt(0) + getCoups().get(j).charAt(1);
-                if(mot1.equals(mot2))
-                    return true;
-            }
-        }
         return false;
     }
 
     @Override
     public boolean peutEtrePoser(IJoueur joueur, IJoueur adversaire, boolean peutDoncEtrePoser){
-        ICarte mAscendant = new Carte(joueur.getAscendant().getValeur());
-        ICarte mDescendant = new Carte(joueur.getDescendant().getValeur());
-        ICarte advAscendant = new Carte(adversaire.getAscendant().getValeur());
-        ICarte advDescendant = new Carte(adversaire.getDescendant().getValeur());
-
-        for(int i = 0; i < getCoups().size(); i++) { // 04v 05v 06v
-            int nombre = Integer.parseInt(getCoups().get(i).substring(0,2));
-            if(getCoups().get(i).length() <= 3){ // ton tas
-                if (!dansMesPilesDeCartes(joueur, peutDoncEtrePoser, mAscendant, mDescendant, i, nombre))
-                    return false;
-            } else { // l'autre tas
-                if (!dansSesPilesDeCartes(adversaire, joueur, peutDoncEtrePoser, advAscendant, advDescendant, i, nombre))
-                    return false;
-            }
-        }
         return true;
     }
 
@@ -120,31 +64,7 @@ public class Coup extends ACoup {
      */
     private boolean dansMesPilesDeCartes(IJoueur joueur, boolean peutDoncEtrePoser, ICarte mAscendant,
                                          ICarte mDescendant, int i , int nombre) {
-        if (getCoups().get(i).charAt(2) == '^'){ // carte ascendant
-            if((mAscendant.getValeur() < nombre || mAscendant.getValeur() - 10  == nombre)){
-                mAscendant.setValeur(nombre);
-                if(peutDoncEtrePoser){
-                    int idx = donneIdxRemove(getCoups().get(i), joueur);
-                    if (idx == -1)
-                        return false;
-                    poser(idx, joueur.getAscendant(), joueur);
-                }
-                return true;
-            }
             return false;
-        }else{ // carte descendant
-            if(mDescendant.getValeur() > nombre || (mDescendant.getValeur() + 10) == nombre){
-                mDescendant.setValeur(nombre);
-                if (peutDoncEtrePoser){
-                    int idx = donneIdxRemove(getCoups().get(i), joueur);
-                    if (idx == -1)
-                        return false;
-                    poser(idx, joueur.getDescendant(), joueur);
-                }
-                return true;
-            }
-            return false;
-        }
     }
 
     /**
@@ -160,31 +80,7 @@ public class Coup extends ACoup {
      */
     private boolean dansSesPilesDeCartes(IJoueur adversaire, IJoueur joueur, boolean peutDoncEtrePoser,
                                          ICarte advAscendant, ICarte advDescendant, int i, int nombre) {
-        if (getCoups().get(i).charAt(2) == 'v'){ // carte descendant
-            if (advDescendant.getValeur() < nombre){
-                advDescendant.setValeur(nombre);
-                if (peutDoncEtrePoser){
-                    int idx = donneIdxRemove(getCoups().get(i), joueur);
-                    if (idx == -1)
-                        return false;
-                    poser(idx, adversaire.getDescendant(), joueur);
-                }
-                return true;
-            }
             return false;
-        } else { // carte ascendant
-            if (advAscendant.getValeur() > nombre){
-                advAscendant.setValeur(nombre);
-                if (peutDoncEtrePoser){
-                    int idx = donneIdxRemove(getCoups().get(i), joueur);
-                    if (idx == -1)
-                        return false;
-                    poser(idx, adversaire.getAscendant(), joueur);
-                }
-                return true;
-            }
-            return false;
-        }
     }
 
     /**
@@ -194,8 +90,7 @@ public class Coup extends ACoup {
      * @param joueur le joueur qui joue
      */
     private void poser(int indice, ICarte sensDeLaPile, IJoueur joueur) {
-        sensDeLaPile.setValeur(joueur.getMesCartes().getCarte(indice).getValeur());
-        joueur.getMesCartes().removeCarte(indice);
+
     }
 
     /**
@@ -204,11 +99,6 @@ public class Coup extends ACoup {
      * @return l'indice de la carte a remove
      */
     private int donneIdxRemove(String saisie, IJoueur joueur){
-        String nombre = "" + saisie.charAt(0) + saisie.charAt(1);
-        for (int i = 0; i < joueur.getMesCartes().getNbCartes(); i++) {
-            if(Integer.parseInt(nombre) == joueur.getMesCartes().getCarte(i).getValeur())
-                return i;
-        }
         return -1;
     }
 

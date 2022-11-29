@@ -47,22 +47,11 @@ public abstract class AJoueur implements IJoueur {
      */
     public AJoueur(Nom nom, boolean monTourDeJouer){
         // Création des données de bases
-        mesCartes = new Paquet();
-        maPioche = new Paquet(true);
-        descendant = new Carte(60);
-        ascendant = new Carte(1);
-        coup = new Coup();
 
         // Ajoute 6 cartes à ma main de cartes
-        for (int i = 0; i < 6; i++){
-            if (!maPioche.estVide())
-                ajoute(maPioche.piocher());
-        }
+
         // Mélange le paquet de cartes dans ma main
-        mesCartes.getCartes().sort(Comparator.comparing(ICarte::getValeur));
-        // Passage des valeurs passés en paramètre aux attributs de la classe
-        this.nom = nom;
-        this.monTourDeJouer = monTourDeJouer;
+
     }
 
     /** Constructeur d'un joueur n'ayant pas la priorité de jeu */
@@ -143,11 +132,7 @@ public abstract class AJoueur implements IJoueur {
     @Override
     public boolean aMonTourDeJouer(IJoueur adversaire) {
         // Si c'est à mon tour de jouer se met en false et met à true l'autre joueur puis renvoi true
-        if (this.monTourDeJouer){
-            this.monTourDeJouer = false;
-            adversaire.setMonTourDeJouer(true);
-            return true;
-        }
+
         // Renvoi false dans le cas contraire
         return false;
     }

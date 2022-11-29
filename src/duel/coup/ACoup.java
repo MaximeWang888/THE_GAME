@@ -35,24 +35,7 @@ public abstract class ACoup implements ICoup
 
     @Override
     public int calculCartePiocher(IPaquet maPioche, IPaquet mesCartes){
-
-        int nb = getCoups().get(0).length();
-        for (int i = 1; i < getCoups().size(); i++) {
-            if(nb < getCoups().get(i).length())
-                nb = getCoups().get(i).length();
-        }
-        if(nb == 3){
-            if(maPioche.getNbCartes() > 1) {
-                return 2;
-            }else
-                return maPioche.getNbCartes();
-        }else {
-            int nbDeCartesAPiocher = 6 - mesCartes.getNbCartes();
-            if (nbDeCartesAPiocher <= maPioche.getNbCartes())
-                return nbDeCartesAPiocher;
-            else
-                return maPioche.getNbCartes();
-        }
+        return 1;
     }
 
 }
