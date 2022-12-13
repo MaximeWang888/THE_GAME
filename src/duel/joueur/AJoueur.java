@@ -31,7 +31,7 @@ public abstract class AJoueur implements IJoueur {
     private ICarte ascendant;
 
     /** Le nom du joueur */
-    private Nom nom;
+    private String nom;
 
     /** Le coup du joueur */
     private ICoup coup;
@@ -45,7 +45,7 @@ public abstract class AJoueur implements IJoueur {
      * @param nom détermine le nom du joueur
      * @param monTourDeJouer détermine la priorité du jeu
      */
-    public AJoueur(Nom nom, boolean monTourDeJouer){
+    public AJoueur(String nom, boolean monTourDeJouer){
         // Création des données de bases
         mesCartes = new Paquet();
         maPioche = new Paquet(true);
@@ -66,7 +66,7 @@ public abstract class AJoueur implements IJoueur {
     }
 
     /** Constructeur d'un joueur n'ayant pas la priorité de jeu */
-    public AJoueur(Nom nom){
+    public AJoueur(String nom){
         this(nom, false);
     }
 
@@ -109,7 +109,7 @@ public abstract class AJoueur implements IJoueur {
 
 
     @Override
-    public Nom getNom() {
+    public String getNom() {
         return nom;
     }
 

@@ -62,7 +62,7 @@ public interface IJoueur {
      * Permet de connaître le nom du joueur
      * @return le nom du Joueur
      */
-    Nom getNom();
+    String getNom();
 
     /**
      * Ajoute une carte à ma main

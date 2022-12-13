@@ -23,7 +23,7 @@ public class PaquetTest {
     @Test
     public void testGetCarte() {
         // GIVEN
-        IJoueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur("Sana");
 
         // WHEN
         j.getMesCartes().getCartes().add(new Carte(500));
@@ -74,7 +74,7 @@ public class PaquetTest {
     @Test
     public void testPaquetDeCartesPosable() {
         // GIVEN
-        IJoueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur("Sana");
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)
@@ -97,7 +97,7 @@ public class PaquetTest {
     @Test
     public void testIsCarteEnMain() {
         // GIVEN
-        IJoueur jV = new Joueur(Nom.NORD);
+        IJoueur jV = new Joueur("Sana");
 
         // WHEN
         jV.ajoute(new Carte(100));

@@ -13,11 +13,11 @@ import java.util.Arrays;
  */
 public class Joueur extends AJoueur {
 
-    public Joueur(Nom nom, boolean monTourDeJouer) {
+    public Joueur(String nom, boolean monTourDeJouer) {
         super(nom, monTourDeJouer);
     }
 
-    public Joueur(Nom nom) {
+    public Joueur(String nom) {
         super(nom);
     }
 

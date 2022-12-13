@@ -12,8 +12,8 @@ public class JoueurTest {
     @Test
     public void testJoueur() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD);
-        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur("Maxime");
+        IJoueur jS = new Joueur("Sana");
 
         // THEN
         assertNotEquals("Le contenu des joueurs doit être différent", jN.toString(), jS.toString());
@@ -22,8 +22,8 @@ public class JoueurTest {
     @Test
     public void testGetNom() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
-        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur("Maxime", true);
+        IJoueur jS = new Joueur("Sana");
 
         // THEN
         assertNotEquals("Les noms des joueurs doivent être différents", jN.getNom(), jS.getNom());
@@ -32,8 +32,8 @@ public class JoueurTest {
     @Test
     public void testGetCoup() {
         // GIVEN
-        IJoueur jS = new Joueur(Nom.SUD);
-        IJoueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur("Sana");
+        IJoueur jN = new Joueur("Maxime");
 
         // THEN
         assertEquals(jS.getCoup().getCoups(), jN.getCoup().getCoups());
@@ -48,8 +48,8 @@ public class JoueurTest {
     @Test
     public void testGetMaPioche() {
         // GIVEN
-        IJoueur jS = new Joueur(Nom.SUD);
-        IJoueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur("Sana");
+        IJoueur jN = new Joueur("Maxime");
 
         // THEN
         assertNotEquals(jS.getMaPioche(), jN.getMaPioche());
@@ -58,8 +58,8 @@ public class JoueurTest {
     @Test
     public void testGetAscendant() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
-        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur("Maxime", true);
+        IJoueur jS = new Joueur("Sana");
 
         // THEN
         assertEquals("La valeur de la carte ascendente doit être identique à celle de l'adversaire" +
@@ -69,8 +69,8 @@ public class JoueurTest {
     @Test
     public void testGetDescendant() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
-        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur("Maxime", true);
+        IJoueur jS = new Joueur("Sana");
 
         // THEN
         assertEquals("La valeur de la carte descendante doit être identique à celle de l'adversaire" +
@@ -80,7 +80,7 @@ public class JoueurTest {
     @Test
     public void testGetNbDeMaPioche() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jN = new Joueur("Maxime", true);
 
         // THEN
         assertEquals("Le nombre de cartes de la pioche du joueur doit être égal à 52",
@@ -90,7 +90,7 @@ public class JoueurTest {
     @Test
     public void testGetNbDeMesCartes() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
+        IJoueur jN = new Joueur("Maxime", true);
 
         // THEN
         assertEquals("Le nombre en cartes en main du joueur doit être égal à 6",
@@ -100,8 +100,8 @@ public class JoueurTest {
     @Test
     public void testAMonTourDeJouer() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
-        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur("Maxime", true);
+        IJoueur jS = new Joueur("Sana");
 
         // THEN
         assertEquals(false, jS.aMonTourDeJouer(jN));
@@ -113,7 +113,7 @@ public class JoueurTest {
     @Test
     public void testADesCartes() {
         // GIVEN
-        Joueur jS = new Joueur(Nom.SUD);
+        Joueur jS = new Joueur("Sana");
 
         // THEN
         assertEquals(true, jS.aDesCartes());
@@ -132,8 +132,8 @@ public class JoueurTest {
     @Test
     public void testPeutPoserDesCartes() {
         // GIVEN
-        IJoueur jN = new Joueur(Nom.NORD, true);
-        IJoueur jS = new Joueur(Nom.SUD);
+        IJoueur jN = new Joueur("Maxime", true);
+        IJoueur jS = new Joueur("Sana");
 
         // THEN
         assertEquals("Début de partie donc on devrait toujours pouvoir posé des cartes",
@@ -160,8 +160,8 @@ public class JoueurTest {
     @Test
     public void testEstUneSaisiValide() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        Joueur jN = new Joueur("Maxime", true);
+        Joueur jS = new Joueur("Sana");
         jN.ajoute(new Carte(5));
         jN.ajoute(new Carte(6));
 
@@ -189,8 +189,8 @@ public class JoueurTest {
     @Test
     public void testAjoute() {
         // GIVEN
-        Joueur jN = new Joueur(Nom.NORD, true);
-        Joueur jS = new Joueur(Nom.SUD);
+        Joueur jN = new Joueur("Maxime", true);
+        Joueur jS = new Joueur("Sana");
         // Retire toutes ses cartes
         int nbCartes = jS.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++) {

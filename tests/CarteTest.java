@@ -2,7 +2,6 @@ import duel.carte.Carte;
 import duel.interfaces.ICarte;
 import duel.interfaces.IJoueur;
 import duel.joueur.Joueur;
-import duel.Nom;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -54,7 +53,7 @@ public class CarteTest {
     @Test
     public void testEstUneCartePosable() {
         // GIVEN
-        IJoueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur("Maxime");
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)

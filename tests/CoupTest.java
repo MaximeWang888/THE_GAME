@@ -40,7 +40,7 @@ public class CoupTest {
     @Test
     public void testEstUnCoupValide() {
         // GIVEN
-        IJoueur j = new Joueur(Nom.NORD);
+        IJoueur j = new Joueur("Maxime");
         ICoup c1 = new Coup();
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
@@ -134,8 +134,8 @@ public class CoupTest {
     @Test
     public void testPeutEtrePoser() {
         // GIVEN
-        IJoueur jS = new Joueur(Nom.SUD);
-        IJoueur jN = new Joueur(Nom.NORD);
+        IJoueur jS = new Joueur("Maxime");
+        IJoueur jN = new Joueur("Sana");
 
         // THEN
         assertTrue(jS.getCoup().peutEtrePoser(jS, jN, false));

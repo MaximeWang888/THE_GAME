@@ -24,7 +24,7 @@ public class FabriqueJoueur implements IFabriqueJoueur {
         switch (type) {
             case "joueur": {
                 List<Object> list = getAttributs(attributs);
-                return new Joueur((Nom) list.get(0), (boolean) list.get(1));
+                    return new Joueur((String) list.get(0), (boolean) list.get(1));
             }
             default:
                 throw new IllegalArgumentException("Type n'est pas defini");
