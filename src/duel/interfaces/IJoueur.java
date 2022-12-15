@@ -1,6 +1,5 @@
 package duel.interfaces;
 
-import duel.Nom;
 
 public interface IJoueur {
 

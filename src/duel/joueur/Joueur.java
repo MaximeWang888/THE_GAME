@@ -1,6 +1,5 @@
 package duel.joueur;
 
-import duel.Nom;
 import duel.interfaces.IJoueur;
 
 import java.util.ArrayList;

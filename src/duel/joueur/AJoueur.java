@@ -1,6 +1,5 @@
 package duel.joueur;
 
-import duel.Nom;
 import duel.carte.Carte;
 import duel.coup.Coup;
 import duel.interfaces.ICarte;
@@ -70,7 +69,7 @@ public abstract class AJoueur implements IJoueur {
         this(nom, false);
     }
     public AJoueur(){
-        this("Ordinateur", true);
+        this("Ordinateur", false);
     }
 
     @Override

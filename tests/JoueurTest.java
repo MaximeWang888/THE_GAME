@@ -1,7 +1,6 @@
 import duel.carte.Carte;
 import duel.interfaces.IJoueur;
 import duel.joueur.Joueur;
-import duel.Nom;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -117,8 +117,8 @@ public class Application {
 
                     // Création des joueurs NORD et SUD
 //                    IJoueur jN = new Joueur(nomJoueur1, true);
-                    IJoueur jN = new JoueurOrdinateur();
-                    IJoueur jS = new Joueur(nomJoueur2);
+                    IJoueur jS = new JoueurOrdinateur();
+                    IJoueur jN = new Joueur(nomJoueur2, true);
 
                     // Tant que le jeu n'est pas terminé
                     while ((jN.aDesCartes() && jS.aDesCartes()) &&
@@ -126,13 +126,13 @@ public class Application {
                         oldCartes = getOldCartes(jN, jS);
                         afficherLesPilesDesJoueurs(jN, jS, oldCartes);
                         if (jN.aMonTourDeJouer(jS)) {
-                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de "
-                                    + jN.getNom() + " de jouer\n" + ANSI_RESET);
+                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
+                                    + jN.getNom() + "' de jouer\n" + ANSI_RESET);
                             System.out.println(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
                             joue(jN, jS);
                         } else if (jS.aMonTourDeJouer(jN)) {
-                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de "
-                                    + jS.getNom() + " de jouer\n" + ANSI_RESET);
+                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
+                                    + jS.getNom() + "' de jouer\n" + ANSI_RESET);
                             System.out.println(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
                             joue(jS, jN);
                         }
@@ -179,7 +179,14 @@ public class Application {
                 System.out.println("02^' 59v" + "     (si vous souhaitez jouer la carte 2 dans le tas de l'autre)");
                 System.out.println("02^' 59v'" + "     (si vous souhaitez jouer la carte 2 " +
                         "et la carte 59 dans le tas de l'autre)");
-                System.out.print("Faites votre jeu => ");
+                System.out.println(ANSI_BLUE + "[INFO] Ou bien vérifier que les cartes" +
+                        " posées soient bien posables sur la(les) pile(s) voulue(s) " + ANSI_RESET);
+                System.out.println("Exemples: (sur un cas de jeu concret)");
+                System.out.println("^[01] v[20]" + "     (les piles sur lesquelles on pose nos cartes)");
+                System.out.println("Faites votre jeu => 36v 21v" + "     (les cartes jouées)");
+                System.out.println("Problème vu que ni la carte 36 et ni la carte 21 peut" +
+                        " être posée \nsur la pile de carte descendante qui est actuellement à 20");
+                System.out.print("\nFaites votre jeu => ");
                 cartesJouer = sc.nextLine();
                 saisieDesCartesJouer = cartesJouer.split(" ");
             }
@@ -195,6 +202,18 @@ public class Application {
                     nbDeCarteAPiocher + " cartes piochées ");
         } else {
             System.out.println("Je suis un ordinateur");
+
+            List saisieDesCartesJouer = new ArrayList<String>();
+
+            // je regarde si mes cartes en main et
+            // si oui alors le poser au hasard dans l'ordre de choixTas
+            for (String choix : choixTas) {
+                for (ICarte carte : j.getMesCartes().getCartes()) {
+                    saisieDesCartesJouer.add(carte + choix);
+                }
+            }
+            System.out.println(saisieDesCartesJouer.get(0));
+            System.out.println(saisieDesCartesJouer.get(1));
         }
     }
 

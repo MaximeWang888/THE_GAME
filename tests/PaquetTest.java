@@ -2,7 +2,6 @@ import duel.carte.Carte;
 import duel.interfaces.IJoueur;
 import duel.interfaces.IPaquet;
 import duel.joueur.Joueur;
-import duel.Nom;
 import duel.paquet.Paquet;
 import org.junit.Test;
 
