@@ -29,25 +29,32 @@ public class Application {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED = "\u001B[31m";
+
+    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_VERT = "\u001B[32m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
     public static ArrayList<ICarte> oldCartes = new ArrayList<>();
 
     private static void menu() {
         String choix;
         System.out.println(ANSI_YELLOW + "Bienvenue dans “The game - le duel” \n" + ANSI_RESET);
-        System.out.println(ANSI_BLUE + "Pour une meilleure expérience de jeu," +
-                " veuillez agrandir votre fenêtre de la console.\n(ou bien l'épingler sur le" +
+        System.out.println(ANSI_BLUE + "[Info] Pour une meilleure expérience de jeu," +
+                " veuillez agrandir votre fenêtre de la console.\n[Info] (ou bien l'épingler sur le" +
                 " côté droit de votre IDE) \n" + ANSI_RESET);
         boolean estTypeAttendu = false;
 
         while (!estTypeAttendu) {
-            System.out.println("\033[0;31m" + "MENU " + ANSI_RESET + "(faites votre choix) ");
-            System.out.println("1 : règles du jeu \n");
-            System.out.println("2 : lancer une partie \n");
-            System.out.println("3 : quitter \n");
+            System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "[DISPLAY] MENU " + "(faites votre choix) |" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "                                    |" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "[DISPLAY] 1 : règles du jeu         |" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "[DISPLAY] 2 : lancer une partie     |" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "[DISPLAY] 3 : quitter               |" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
 
-            System.out.print("Votre choix : ");
+            System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
             choix = sc.nextLine();
 
             switch (choix) {
@@ -97,13 +104,15 @@ public class Application {
                             "--------------------------------------" + ANSI_RESET);
                     System.out.print("La partie commence (amusez-vous bien !) \n\n\n");
 
-                    System.out.print("Veuillez saisir le nom du joueur n°1 : ");
-                    nomJoueur1 = sc.nextLine();
-                    System.out.println("Nom du joueur '" + nomJoueur1 + "' bien enregistré !\n");
+                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le nom du joueur n°1 : " + ANSI_RESET);
+                    nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
+                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
+                            "' bien enregistré !\n" + ANSI_RESET);
 
-                    System.out.print("Veuillez saisir le nom du joueur n°2 : ");
-                    nomJoueur2 = sc.nextLine();
-                    System.out.println("Nom du joueur '" + nomJoueur2 + "' bien enregistré !\n");
+                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le nom du joueur n°2 : " + ANSI_RESET);
+                    nomJoueur2 = sc.nextLine(); nomJoueur2 = nomJoueur2.trim();
+                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur2 +
+                            "' bien enregistré !\n" + ANSI_RESET);
 
                     // Création des joueurs NORD et SUD
                     IJoueur jN = new Joueur(nomJoueur1, true);
@@ -153,9 +162,18 @@ public class Application {
 
         // Dans le cas où la saisie du joueur n'est pas une saisie valide
         while (!j.estUneSaisiValide(saisieDesCartesJouer, jAdversaire)) {
-            System.out.print("#> ");
-            String reJouer = sc.nextLine();
-            saisieDesCartesJouer = reJouer.split(" ");
+            System.out.println(ANSI_RED + "\n[ERROR] Votre coup '" + cartesJouer +
+                    "' n'est pas valide, veuillez rejouer ..." + ANSI_RESET);
+            System.out.println(ANSI_BLUE + "[INFO] Rappel une saisie valide comprend deux cartes à poser " +
+                    "aux minimums et des espaces entre chaque cartes" + ANSI_RESET);
+            System.out.println("Exemples: ");
+            System.out.println("02^ 59v" + "     (si vous souhaitez jouer dans vos tas)");
+            System.out.println("02^' 59v" + "     (si vous souhaitez jouer la carte 2 dans le tas de l'autre)");
+            System.out.println("02^' 59v'" + "     (si vous souhaitez jouer la carte 2 " +
+                    "et la carte 59 dans le tas de l'autre)");
+            System.out.print("Faites votre jeu => ");
+            cartesJouer = sc.nextLine();
+            saisieDesCartesJouer = cartesJouer.split(" ");
         }
         int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
         for (int i = 0; i < nbDeCarteAPiocher; i++) {
