@@ -8,12 +8,8 @@ import java.util.Arrays;
 
 public class JoueurOrdinateur extends AJoueur {
 
-    public JoueurOrdinateur(String nom, boolean monTourDeJouer) {
-        super(nom, monTourDeJouer);
-    }
-
-    public JoueurOrdinateur(String nom) {
-        super(nom);
+    public JoueurOrdinateur() {
+        super();
     }
 
     @Override

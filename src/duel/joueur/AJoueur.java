@@ -69,6 +69,9 @@ public abstract class AJoueur implements IJoueur {
     public AJoueur(String nom){
         this(nom, false);
     }
+    public AJoueur(){
+        this("Ordinateur", true);
+    }
 
     @Override
     public IPaquet getMesCartes() {

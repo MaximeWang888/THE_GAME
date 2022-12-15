@@ -3,6 +3,7 @@ package appli;
 import duel.interfaces.ICarte;
 import duel.interfaces.IJoueur;
 import duel.joueur.Joueur;
+import duel.joueur.JoueurOrdinateur;
 
 import java.util.*;
 
@@ -102,7 +103,7 @@ public class Application {
                             "----------------------------------------------------" +
                             "----------------------------------------------------" +
                             "--------------------------------------" + ANSI_RESET);
-                    System.out.print("La partie commence (amusez-vous bien !) \n\n\n");
+                    System.out.print(ANSI_BLUE + "[INFO] La partie commence (amusez-vous bien !) \n\n\n" + ANSI_RESET);
 
                     System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le nom du joueur n°1 : " + ANSI_RESET);
                     nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
@@ -115,7 +116,8 @@ public class Application {
                             "' bien enregistré !\n" + ANSI_RESET);
 
                     // Création des joueurs NORD et SUD
-                    IJoueur jN = new Joueur(nomJoueur1, true);
+//                    IJoueur jN = new Joueur(nomJoueur1, true);
+                    IJoueur jN = new JoueurOrdinateur();
                     IJoueur jS = new Joueur(nomJoueur2);
 
                     // Tant que le jeu n'est pas terminé
@@ -124,12 +126,14 @@ public class Application {
                         oldCartes = getOldCartes(jN, jS);
                         afficherLesPilesDesJoueurs(jN, jS, oldCartes);
                         if (jN.aMonTourDeJouer(jS)) {
-                            System.out.println("\nC'est au tour de " + jN.getNom() + " de jouer\n");
-                            System.out.println(jN);
+                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de "
+                                    + jN.getNom() + " de jouer\n" + ANSI_RESET);
+                            System.out.println(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
                             joue(jN, jS);
                         } else if (jS.aMonTourDeJouer(jN)) {
-                            System.out.println("\nC'est au tour de " + jS.getNom() + " de jouer\n");
-                            System.out.println(jS);
+                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de "
+                                    + jS.getNom() + " de jouer\n" + ANSI_RESET);
+                            System.out.println(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
                             joue(jS, jN);
                         }
                     }
@@ -143,6 +147,8 @@ public class Application {
                     System.out.println("Nous allons quitter de l'application...");
                     System.exit(0);
                 default:
+                    System.out.println(ANSI_RED + "[ERROR] Ce choix '" + choix +
+                            "' n'existe pas. Veuillez resaisir à nouveau. \n" + ANSI_RESET);
                     break;
             }
         }
@@ -155,34 +161,41 @@ public class Application {
      * @param jAdversaire Le joueur adverse qui ne joue pas
      */
     private static void joue(IJoueur j, IJoueur jAdversaire) {
-        // Dans le cas général, un affichage plus une demande de saisie au joueur
-        System.out.print("\nFaites votre jeu => ");
-        String cartesJouer = sc.nextLine();
-        String[] saisieDesCartesJouer = cartesJouer.split(" ");
+        String[] choixTas = {"^", "v", "^'", "v'"};
+        if (j.getNom() != "Ordinateur") {
+            // Dans le cas général, un affichage plus une demande de saisie au joueur
+            System.out.print("\nFaites votre jeu => ");
+            String cartesJouer = sc.nextLine();
+            String[] saisieDesCartesJouer = cartesJouer.split(" ");
 
-        // Dans le cas où la saisie du joueur n'est pas une saisie valide
-        while (!j.estUneSaisiValide(saisieDesCartesJouer, jAdversaire)) {
-            System.out.println(ANSI_RED + "\n[ERROR] Votre coup '" + cartesJouer +
-                    "' n'est pas valide, veuillez rejouer ..." + ANSI_RESET);
-            System.out.println(ANSI_BLUE + "[INFO] Rappel une saisie valide comprend deux cartes à poser " +
-                    "aux minimums et des espaces entre chaque cartes" + ANSI_RESET);
-            System.out.println("Exemples: ");
-            System.out.println("02^ 59v" + "     (si vous souhaitez jouer dans vos tas)");
-            System.out.println("02^' 59v" + "     (si vous souhaitez jouer la carte 2 dans le tas de l'autre)");
-            System.out.println("02^' 59v'" + "     (si vous souhaitez jouer la carte 2 " +
-                    "et la carte 59 dans le tas de l'autre)");
-            System.out.print("Faites votre jeu => ");
-            cartesJouer = sc.nextLine();
-            saisieDesCartesJouer = cartesJouer.split(" ");
+            // Dans le cas où la saisie du joueur n'est pas une saisie valide
+            while (!j.estUneSaisiValide(saisieDesCartesJouer, jAdversaire)) {
+                System.out.println(ANSI_RED + "\n[ERROR] Votre coup '" + cartesJouer +
+                        "' n'est pas valide, veuillez rejouer ..." + ANSI_RESET);
+                System.out.println(ANSI_BLUE + "[INFO] Rappel une saisie valide comprend deux cartes à poser " +
+                        "aux minimums et des espaces entre chaque cartes" + ANSI_RESET);
+                System.out.println("Exemples: ");
+                System.out.println("02^ 59v" + "     (si vous souhaitez jouer dans vos tas)");
+                System.out.println("02^' 59v" + "     (si vous souhaitez jouer la carte 2 dans le tas de l'autre)");
+                System.out.println("02^' 59v'" + "     (si vous souhaitez jouer la carte 2 " +
+                        "et la carte 59 dans le tas de l'autre)");
+                System.out.print("Faites votre jeu => ");
+                cartesJouer = sc.nextLine();
+                saisieDesCartesJouer = cartesJouer.split(" ");
+            }
+            // Piocher
+            int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
+            for (int i = 0; i < nbDeCarteAPiocher; i++) {
+                if (!j.getMaPioche().estVide() && j.getMesCartes().getNbCartes() < 7)
+                    j.getMesCartes().getCartes().add(j.getMaPioche().piocher());
+            }
+            // Trier les cartes de manière croissantes
+            j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
+            System.out.println(j.getCoup().getCoups().size() + " cartes posées, " +
+                    nbDeCarteAPiocher + " cartes piochées ");
+        } else {
+            System.out.println("Je suis un ordinateur");
         }
-        int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
-        for (int i = 0; i < nbDeCarteAPiocher; i++) {
-            if (!j.getMaPioche().estVide() && j.getMesCartes().getNbCartes() < 7)
-                j.getMesCartes().getCartes().add(j.getMaPioche().piocher());
-        }
-        j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
-        System.out.println(j.getCoup().getCoups().size() + " cartes posées, " +
-                nbDeCarteAPiocher + " cartes piochées ");
     }
 
     private static ArrayList<ICarte> getOldCartes(IJoueur jN, IJoueur jS) {
