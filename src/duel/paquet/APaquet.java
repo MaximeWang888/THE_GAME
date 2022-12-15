@@ -64,7 +64,7 @@ public abstract class APaquet implements IPaquet {
     public String toString() {
         StringBuilder tmp = new StringBuilder();
         for (ICarte c:cartes) {
-            tmp.append(c).append(" ");
+            tmp.append(" [ ").append(c).append(" ] ");
         }
         return tmp.toString();
     }

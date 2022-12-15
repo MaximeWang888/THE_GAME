@@ -20,14 +20,12 @@ public class Application {
      * Creation et lancement du jeu
      */
     public static void main(String[] args) {
-
         menu();
     }
 
-    //Déclaration des couleurs pour l'affichage sur terminal
-        //ANSI_RESET => Pour remettre la couleur de base
+    // Déclaration des couleurs pour l'affichage sur terminal
+    // ANSI_RESET => Pour remettre la couleur de base
     public static final String ANSI_RESET = "\u001B[0m";
-        //Couleur Jaune
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -35,11 +33,13 @@ public class Application {
     public static ArrayList<ICarte> oldCartes = new ArrayList<>();
     private static void menu() {
         String choix;
-        System.out.println("Bienvenue dans THE GAME \n");
+        System.out.println(ANSI_YELLOW + "Bienvenue dans “The game - le duel” \n" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "Pour une meilleure expérience de jeu," +
+                " veuillez agrandir votre fenêtre de la console.\n(ou bien l'épingler sur le côté droit de votre IDE) \n" + ANSI_RESET);
         boolean estTypeAttendu = false;
 
         while (!estTypeAttendu) {
-            System.out.println("Menu : (faites votre choix) \n");
+            System.out.println("\033[0;31m" + "MENU " + ANSI_RESET + "(faites votre choix) " );
             System.out.println("1 : règles du jeu \n");
             System.out.println("2 : lancer une partie \n");
             System.out.println("3 : quitter \n");
@@ -50,11 +50,14 @@ public class Application {
             switch (choix) {
                 case "1":
                 {
-                    System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-                    System.out.println("règles du jeu : \nLe jeu “The game - le duel” est un jeu de cartes qui se joue " +
+                    System.out.println(ANSI_VERT + "\n---------------------------" +
+                            "----------------------------------------------------" +
+                            "----------------------------------------------------" +
+                            "--------------------------------------" + ANSI_RESET);
+                    System.out.println("Règles du jeu : \nLe jeu “The game - le duel” est un jeu de cartes qui se joue " +
                             "entre deux joueurs, chacun a 60 cartes et une pile ascendante et descendante. \n ");
                     System.out.println("Le but du jeu est de vider ses cartes mais vous gagnez aussi si votre " +
-                            "adversaire ne peut plus jouer\n");
+                            "adversaire ne peut plus jouer.\n");
                     System.out.println("Chaque joueur commence avec six cartes en main et récupère entre deux et " +
                             "six cartes selon le coup qu’il a joué.");
                     System.out.println("Il y a plusieurs règles de pose mais la principale et que sur le tas ascendant " +
@@ -68,18 +71,28 @@ public class Application {
                     System.out.println("Exemple : Si sur la pile montante de l'adversaire il y a la carte 08 posée et que le joueur possède la carte 18, " +
                             "\nle joueur peut alors poser sa carte sur la pile montante de l'adversaire");
                     System.out.println("Pour poser la carte n°18 sur la pile montante de l'adversaire, il faut ajouter une apostrophe : 18^' ");
-                    System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println(ANSI_VERT + "---------------------------" +
+                            "----------------------------------------------------" +
+                            "----------------------------------------------------" +
+                            "--------------------------------------\n" + ANSI_RESET);
                     break;
                 }
                 case "2":
                 {
                     String nomJoueur1, nomJoueur2;
+                    System.out.println(ANSI_VERT + "\n---------------------------" +
+                            "----------------------------------------------------" +
+                            "----------------------------------------------------" +
+                            "--------------------------------------" + ANSI_RESET);
+                    System.out.print("La partie commence (amusez-vous bien !) \n\n\n");
 
                     System.out.print("Veuillez saisir le nom du joueur n°1 : ");
                     nomJoueur1 = sc.nextLine();
+                    System.out.println("Nom du joueur '" + nomJoueur1 + "' bien enregistré !\n");
 
                     System.out.print("Veuillez saisir le nom du joueur n°2 : ");
                     nomJoueur2 = sc.nextLine();
+                    System.out.println("Nom du joueur '" + nomJoueur2 + "' bien enregistré !\n");
 
                     // Création des joueurs NORD et SUD
                     IJoueur jN = new Joueur(nomJoueur1, true);
@@ -90,9 +103,11 @@ public class Application {
                         oldCartes = getOldCartes(jN, jS);
                         afficherLesPilesDesJoueurs(jN, jS, oldCartes);
                         if (jN.aMonTourDeJouer(jS)) {
+                            System.out.println("\nC'est au tour de " + jN.getNom() + " de jouer\n");
                             System.out.println(jN);
                             joue(jN, jS);
                         } else if (jS.aMonTourDeJouer(jN)) {
+                            System.out.println("\nC'est au tour de " + jS.getNom() + " de jouer\n");
                             System.out.println(jS);
                             joue(jS, jN);
                         }
@@ -119,7 +134,7 @@ public class Application {
      */
     private static void joue (IJoueur j, IJoueur jAdversaire){
         // Dans le cas général, un affichage plus une demande de saisie au joueur
-        System.out.print("> ");
+        System.out.print("\nFaites votre jeu => ");
         String cartesJouer = sc.nextLine();
         String[] saisieDesCartesJouer = cartesJouer.split(" ");
 
@@ -155,26 +170,30 @@ public class Application {
     private static void afficherLesPilesDesJoueurs (IJoueur jN, IJoueur jS,List<ICarte> oldCartes){
         Formatter fmt = new Formatter();
         Formatter fm = new Formatter();
+        int nbSpace = jN.getNom().length() + jS.getNom().length();
 
-        if(oldCartes.contains(jN.getDescendant()) && oldCartes.contains(jN.getAscendant())) {
-            // Affichage des piles de cartes des joueurs NORD et SUD
-            System.out.println(fmt.format("\n\n%-4s", jN.getNom()) + " : ^[" + jN.getAscendant() + "] "
-                    + "v[" + jN.getDescendant() + "] (mon nombre de cartes : " + jN.getNbDeMesCartes() +
-                    " ; nombre de cartes restantes dans ma pioche : " + jN.getNbDeMaPioche() + ")");
+        System.out.println("\n\n-------------------------------------------------------------------------------");
+        System.out.println("Présentation des piles de cartes de chaque joueur (ascendante et descendante)");
 
-            System.out.println(fm.format("%-4s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
-                    + "v[" + jS.getDescendant() + "] (mon nombre de cartes : " + jS.getNbDeMesCartes() +
-                    " ; nombre de cartes restantes dans ma pioche : " + jS.getNbDeMaPioche() + ")");
+        // Affichage des piles de cartes (Joueur 1)
+        System.out.print(fmt.format("\n%-10s", jN.getNom()) + " : ^[" + jN.getAscendant() + "] "
+                + "v[" + jN.getDescendant() + "]");
+        for (int i = 0; i < nbSpace; i++) {
+            System.out.print(" ");
         }
-        else {
-            System.out.println(fmt.format("\n\n%-4s", jN.getNom()) + " : ^["+ANSI_RED + jN.getAscendant() + ANSI_RESET+"] "
-                    + "v[" +ANSI_RED+ jN.getDescendant() +ANSI_RESET+ "] (mon nombre de cartes : " + jN.getNbDeMesCartes() +
-                    " ; nombre de cartes restantes dans ma pioche : " + jN.getNbDeMaPioche() + ")");
+        System.out.println("(" + jN.getNbDeMesCartes()+
+                " cartes en main ET " + jN.getNbDeMaPioche() + " cartes dans ma pioche)");
 
-            System.out.println(fm.format("%-4s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
-                    + "v[" + jS.getDescendant() + "] (mon nombre de cartes : " + jS.getNbDeMesCartes() +
-                    " ; nombre de cartes restantes dans ma pioche : " + jS.getNbDeMaPioche() + ")");
+        // Affichage des piles de cartes (joueur 2)
+        System.out.print(fm.format("%-10s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
+                + "v[" + jS.getDescendant() + "]");
+        for (int i = 0; i < nbSpace; i++) {
+            System.out.print(" ");
         }
+        System.out.print("(" + jS.getNbDeMesCartes() +
+                " cartes en main ET " + jS.getNbDeMaPioche() + " cartes dans ma pioche)");
+
+        System.out.println("\n\n-------------------------------------------------------------------------------");
     }
 
     /**

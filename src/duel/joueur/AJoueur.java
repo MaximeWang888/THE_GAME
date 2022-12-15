@@ -130,7 +130,7 @@ public abstract class AJoueur implements IJoueur {
      */
     @Override
     public String toString() {
-        return "cartes " + nom + " { " + mesCartes + '}';
+        return "Vos cartes sont : " + mesCartes ;
     }
 
 
