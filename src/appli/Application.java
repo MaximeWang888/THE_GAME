@@ -44,7 +44,7 @@ public class Application {
         System.out.println(ANSI_BLUE + "[Info] Pour une meilleure expérience de jeu," +
                 " veuillez agrandir votre fenêtre de la console.\n[Info] (ou bien l'épingler sur le" +
                 " côté droit de votre IDE) \n" + ANSI_RESET);
-        boolean estTypeAttendu = false;
+        boolean estTypeAttendu = false, estTypeAttendu2 = false;
 
         while (!estTypeAttendu) {
             System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
@@ -60,6 +60,8 @@ public class Application {
 
             switch (choix) {
                 case "1": {
+                    System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
+                            choix + " est bien enregistré " + ANSI_RESET);
                     System.out.println(ANSI_VERT + "\n---------------------------" +
                             "----------------------------------------------------" +
                             "----------------------------------------------------" +
@@ -98,50 +100,95 @@ public class Application {
                     break;
                 }
                 case "2": {
+                    String choix2;
                     String nomJoueur1, nomJoueur2;
-                    System.out.println(ANSI_VERT + "\n---------------------------" +
-                            "----------------------------------------------------" +
-                            "----------------------------------------------------" +
-                            "--------------------------------------" + ANSI_RESET);
-                    System.out.print(ANSI_BLUE + "[INFO] La partie commence (amusez-vous bien !) \n\n\n" + ANSI_RESET);
+                    IJoueur jN = null, jS = null;
 
-                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le nom du joueur n°1 : " + ANSI_RESET);
-                    nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
-                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
-                            "' bien enregistré !\n" + ANSI_RESET);
+                    System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
+                            choix + " est bien enregistré \n" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "------------------------------" +
+                            "---------------------------------------" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "[DISPLAY] Mode de jeu (faites votre choix)" +
+                            "                          |" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "                                 " +
+                            "                                   |" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "[DISPLAY] 1 : avec un(e) ami(e)   " +
+                            "                                  |" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "[DISPLAY] 2 : avec un ordinateur   " +
+                            "                                 |" + ANSI_RESET);
+                    System.out.println(ANSI_CYAN + "-------------------------------------" +
+                            "--------------------------------" + ANSI_RESET);
 
-                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le nom du joueur n°2 : " + ANSI_RESET);
-                    nomJoueur2 = sc.nextLine(); nomJoueur2 = nomJoueur2.trim();
-                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur2 +
-                            "' bien enregistré !\n" + ANSI_RESET);
+                    System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
+                    while (!estTypeAttendu2) {
+                        choix2 = sc.nextLine();
 
-                    // Création des joueurs NORD et SUD
-//                    IJoueur jN = new Joueur(nomJoueur1, true);
-                    IJoueur jN = new Joueur(nomJoueur1, true);
-                    IJoueur jS = new JoueurOrdinateur();
+                        switch (choix2) {
+                            case "1": {
+                                System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
+                                        choix2 + " est bien enregistré \n" + ANSI_RESET);
+                                System.out.println(ANSI_VERT + "\n---------------------------" +
+                                        "----------------------------------------------------" +
+                                        "----------------------------------------------------" +
+                                        "--------------------------------------" + ANSI_RESET);
+                                System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
+                                        " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
 
-                    // Tant que le jeu n'est pas terminé
-                    while ((jN.aDesCartes() && jS.aDesCartes()) &&
-                            (jN.peutPoserDesCartes(jS) && jS.peutPoserDesCartes(jN))) {
-                        oldCartes = getOldCartes(jN, jS);
-                        afficherLesPilesDesJoueurs(jN, jS, oldCartes);
-                        if (jN.aMonTourDeJouer(jS)) {
-                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
-                                    + jN.getNom() + "' de jouer\n" + ANSI_RESET);
-                            System.out.println(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
-                            joue(jN, jS);
-                        } else if (jS.aMonTourDeJouer(jN)) {
-                            System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
-                                    + jS.getNom() + "' de jouer\n" + ANSI_RESET);
-                            System.out.println(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
-                            joue(jS, jN);
+                                System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
+                                        " nom du joueur n°1 : " + ANSI_RESET);
+                                nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
+                                System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
+                                        "' bien enregistré !\n" + ANSI_RESET);
+
+                                System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
+                                        " nom du joueur n°2 : " + ANSI_RESET);
+                                nomJoueur2 = sc.nextLine(); nomJoueur2 = nomJoueur2.trim();
+                                System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur2 +
+                                        "' bien enregistré !\n" + ANSI_RESET);
+                                jN = new Joueur(nomJoueur1, true);
+                                jS = new Joueur(nomJoueur2);
+                                jeu(jN, jS);
+
+                                sc.close();
+
+                                // Affiche le nom du gagnant à la fin du jeu
+                                System.out.println(leGagnant(jN, jS));
+                                System.exit(0);
+                                break;
+                            }
+                            case "2": {
+                                System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
+                                        choix2 + " est bien enregistré \n" + ANSI_RESET);
+                                System.out.println(ANSI_VERT + "\n---------------------------" +
+                                        "----------------------------------------------------" +
+                                        "----------------------------------------------------" +
+                                        "--------------------------------------" + ANSI_RESET);
+                                System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
+                                        " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
+
+                                System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
+                                        " nom du joueur n°1 : " + ANSI_RESET);
+                                nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
+                                System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
+                                        "' bien enregistré !\n" + ANSI_RESET);
+                                jN = new Joueur(nomJoueur1, true);
+                                jS = new JoueurOrdinateur();
+                                jeu(jN, jS);
+
+                                sc.close();
+
+                                // Affiche le nom du gagnant à la fin du jeu
+                                System.out.println(leGagnant(jN, jS));
+                                System.exit(0);
+                                break;
+                            }
+                            default:
+                                System.out.println(ANSI_RED + "[ERROR] Ce choix '" + choix2 +
+                                        "' n'existe pas. Veuillez resaisir à nouveau. \n" + ANSI_RESET);
+                                System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
+                                break;
                         }
                     }
-                    sc.close();
-
-                    // Affiche le nom du gagnant à la fin du jeu
-                    System.out.println(leGagnant(jN, jS));
-                    System.exit(0);
                 }
                 case "3":
                     System.out.println("Nous allons quitter de l'application...");
@@ -150,6 +197,26 @@ public class Application {
                     System.out.println(ANSI_RED + "[ERROR] Ce choix '" + choix +
                             "' n'existe pas. Veuillez resaisir à nouveau. \n" + ANSI_RESET);
                     break;
+            }
+        }
+    }
+
+    private static void jeu(IJoueur jN, IJoueur jS) {
+        // Tant que le jeu n'est pas terminé
+        while ((jN.aDesCartes() && jS.aDesCartes()) &&
+                (jN.peutPoserDesCartes(jS) && jS.peutPoserDesCartes(jN))) {
+            oldCartes = getOldCartes(jN, jS);
+            afficherLesPilesDesJoueurs(jN, jS, oldCartes);
+            if (jN.aMonTourDeJouer(jS)) {
+                System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
+                        + jN.getNom() + "' de jouer\n" + ANSI_RESET);
+                System.out.println(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
+                joue(jN, jS);
+            } else if (jS.aMonTourDeJouer(jN)) {
+                System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
+                        + jS.getNom() + "' de jouer\n" + ANSI_RESET);
+                System.out.println(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
+                joue(jS, jN);
             }
         }
     }

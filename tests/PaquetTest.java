@@ -89,7 +89,7 @@ public class PaquetTest {
                 new Carte(1), new Carte(60), new Carte(1), new Carte(60)));
         assertEquals("\nLa carte 55 devrait normalement être posable sur sa carte ascendante et \n" +
                         "la carte 25 devrait aussi être posable sur la carte descendante du tas adverse",
-                true, j.getMesCartes().paquetDeCartesPosable(new Carte(20), new Carte(50),
+                false, j.getMesCartes().paquetDeCartesPosable(new Carte(20), new Carte(50),
                         new Carte(10), new Carte(20)));
     }
 
