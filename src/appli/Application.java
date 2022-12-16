@@ -128,8 +128,7 @@ public class Application {
                                         choix2 + " est bien enregistré \n" + ANSI_RESET);
                                 System.out.println(ANSI_VERT + "\n---------------------------" +
                                         "----------------------------------------------------" +
-                                        "----------------------------------------------------" +
-                                        "--------------------------------------" + ANSI_RESET);
+                                        "-------------------------------------" + ANSI_RESET);
                                 System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
                                         " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
 
@@ -160,8 +159,7 @@ public class Application {
                                         choix2 + " est bien enregistré \n" + ANSI_RESET);
                                 System.out.println(ANSI_VERT + "\n---------------------------" +
                                         "----------------------------------------------------" +
-                                        "----------------------------------------------------" +
-                                        "--------------------------------------" + ANSI_RESET);
+                                        "-------------------------------------" + ANSI_RESET);
                                 System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
                                         " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
 
@@ -327,11 +325,12 @@ public class Application {
         Formatter fm = new Formatter();
         int nbSpace = jN.getNom().length() + jS.getNom().length();
 
-        System.out.println("\n\n-------------------------------------------------------------------------------");
-        System.out.println("Présentation des piles de cartes de chaque joueur (ascendante et descendante)");
-
+        System.out.println(ANSI_BLUE + "\n\n--------------------------------------" +
+                "--------------------------------------------------------");
+        System.out.print("[INFO] Présentation des piles de cartes" +
+                " de chaque joueur (ascendante et descendante)\n");
         // Affichage des piles de cartes (Joueur 1)
-        System.out.print(fmt.format("\n%-10s", jN.getNom()) + " : ^[" + jN.getAscendant() + "] "
+        System.out.print(fmt.format("\n[INFO] %-15s", jN.getNom()) + " : ^[" + jN.getAscendant() + "] "
                 + "v[" + jN.getDescendant() + "]");
         for (int i = 0; i < nbSpace; i++) {
             System.out.print(" ");
@@ -340,7 +339,7 @@ public class Application {
                 " cartes en main ET " + jN.getNbDeMaPioche() + " cartes dans ma pioche)");
 
         // Affichage des piles de cartes (joueur 2)
-        System.out.print(fm.format("%-10s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
+        System.out.print(fm.format("[INFO] %-15s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
                 + "v[" + jS.getDescendant() + "]");
         for (int i = 0; i < nbSpace; i++) {
             System.out.print(" ");
@@ -348,7 +347,8 @@ public class Application {
         System.out.print("(" + jS.getNbDeMesCartes() +
                 " cartes en main ET " + jS.getNbDeMaPioche() + " cartes dans ma pioche)");
 
-        System.out.println("\n\n-------------------------------------------------------------------------------");
+        System.out.println("\n---------------------------------------" +
+                "-------------------------------------------------------" + ANSI_RESET);
     }
 
     /**
