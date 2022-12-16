@@ -164,7 +164,7 @@ public class Application {
         String[] choixTas = {"^", "v", "^'", "v'"};
         if (j.getNom() != "Ordinateur") {
             // Dans le cas général, un affichage plus une demande de saisie au joueur
-            System.out.print("\nFaites votre jeu => ");
+            System.out.print(ANSI_PURPLE + "\n[JOUER] Faites votre jeu => " + ANSI_RESET);
             String cartesJouer = sc.nextLine();
             String[] saisieDesCartesJouer = cartesJouer.split(" ");
 
@@ -187,7 +187,7 @@ public class Application {
                 System.out.println("Problème vu que ni la carte 36 et ni la carte 21 peut" +
                         " être posée \nsur la pile de carte descendante qui est actuellement à 20");
                 System.out.println(ANSI_CYAN + "\n[DISPLAY] " + j + ANSI_RESET);
-                System.out.print("\nFaites votre jeu => ");
+                System.out.print(ANSI_PURPLE + "\n[JOUER] Faites votre jeu => " + ANSI_RESET);
                 cartesJouer = sc.nextLine();
                 saisieDesCartesJouer = cartesJouer.split(" ");
             }
@@ -199,10 +199,11 @@ public class Application {
             }
             // Trier les cartes de manière croissantes
             j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
-            System.out.println(j.getCoup().getCoups().size() + " cartes posées, " +
-                    nbDeCarteAPiocher + " cartes piochées ");
+            System.out.println(ANSI_VERT + "[SUCCESS] Votre jeu est bien enregistré " +
+                    saisieDesCartesJouer[0] + " " + saisieDesCartesJouer[1] + ANSI_RESET);
+            System.out.println(ANSI_VERT + "[SUCCESS] " + j.getCoup().getCoups().size() + " cartes posées, " +
+                    nbDeCarteAPiocher + " cartes piochées " + ANSI_RESET);
         } else {
-            System.out.println("Je suis un ordinateur");
             j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
 
             List<String> saisieDesCartesJouer = new ArrayList<>();
@@ -225,12 +226,12 @@ public class Application {
             if (i == saisieDesCartesJouer.size() - 2)// c'est l'avant dernier
                 break;
             else {
-                System.out.println(saisieDesCartesJouer.get(i));
                 test[0] = saisieDesCartesJouer.get(i);
                 for (int k = 1; k < saisieDesCartesJouer.size(); k++) {
                     test[1] = saisieDesCartesJouer.get(k);
                     if (j.estUneSaisiValide(test, jAdversaire)) {
-                        System.out.println("J'ai posé mes cartes");
+                        System.out.println(ANSI_VERT + "[SUCCESS] L'ordinateur a joué : "
+                                + test[0] + " " + test[1] + ANSI_RESET);
                         return;
                     }
                     else test[1] = "";
@@ -300,13 +301,13 @@ public class Application {
             afficherLesPilesDesJoueurs(jN, jS, oldCartes);
             phraseDuGagnant.append(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
             phraseDuGagnant.append("\n");
-            phraseDuGagnant.append(ANSI_VERT + "partie finie, ")
+            phraseDuGagnant.append(ANSI_VERT + "[GAMEOVER] partie finie, ")
                     .append(jN.getNom() + ANSI_RESET);
         } else {
             afficherLesPilesDesJoueurs(jN, jS, oldCartes);
             phraseDuGagnant.append(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
             phraseDuGagnant.append("\n");
-            phraseDuGagnant.append(ANSI_VERT + "partie finie, ")
+            phraseDuGagnant.append(ANSI_VERT + "[GAMEOVER] partie finie, ")
                     .append(jS.getNom() + ANSI_RESET);
         }
 
