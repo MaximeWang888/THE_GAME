@@ -117,8 +117,8 @@ public class Application {
 
                     // Création des joueurs NORD et SUD
 //                    IJoueur jN = new Joueur(nomJoueur1, true);
+                    IJoueur jN = new Joueur(nomJoueur1, true);
                     IJoueur jS = new JoueurOrdinateur();
-                    IJoueur jN = new Joueur(nomJoueur2, true);
 
                     // Tant que le jeu n'est pas terminé
                     while ((jN.aDesCartes() && jS.aDesCartes()) &&
@@ -186,6 +186,7 @@ public class Application {
                 System.out.println("Faites votre jeu => 36v 21v" + "     (les cartes jouées)");
                 System.out.println("Problème vu que ni la carte 36 et ni la carte 21 peut" +
                         " être posée \nsur la pile de carte descendante qui est actuellement à 20");
+                System.out.println(ANSI_CYAN + "\n[DISPLAY] " + j + ANSI_RESET);
                 System.out.print("\nFaites votre jeu => ");
                 cartesJouer = sc.nextLine();
                 saisieDesCartesJouer = cartesJouer.split(" ");
@@ -202,8 +203,9 @@ public class Application {
                     nbDeCarteAPiocher + " cartes piochées ");
         } else {
             System.out.println("Je suis un ordinateur");
+            j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
 
-            List saisieDesCartesJouer = new ArrayList<String>();
+            List<String> saisieDesCartesJouer = new ArrayList<>();
 
             // je regarde si mes cartes en main et
             // si oui alors le poser au hasard dans l'ordre de choixTas
@@ -212,8 +214,28 @@ public class Application {
                     saisieDesCartesJouer.add(carte + choix);
                 }
             }
-            System.out.println(saisieDesCartesJouer.get(0));
-            System.out.println(saisieDesCartesJouer.get(1));
+
+            joueAuHasardBot(j, jAdversaire, saisieDesCartesJouer);
+        }
+    }
+
+    private static void joueAuHasardBot(IJoueur j, IJoueur jAdversaire, List<String> saisieDesCartesJouer) {
+        String[] test = new String[2];
+        for (int i = 0; i < saisieDesCartesJouer.size(); i++) {
+            if (i == saisieDesCartesJouer.size() - 2)// c'est l'avant dernier
+                break;
+            else {
+                System.out.println(saisieDesCartesJouer.get(i));
+                test[0] = saisieDesCartesJouer.get(i);
+                for (int k = 1; k < saisieDesCartesJouer.size(); k++) {
+                    test[1] = saisieDesCartesJouer.get(k);
+                    if (j.estUneSaisiValide(test, jAdversaire)) {
+                        System.out.println("J'ai posé mes cartes");
+                        return;
+                    }
+                    else test[1] = "";
+                }
+            }
         }
     }
 
@@ -276,19 +298,19 @@ public class Application {
 
         if (!jN.aDesCartes() || !jS.peutPoserDesCartes(jN)) {
             afficherLesPilesDesJoueurs(jN, jS, oldCartes);
-            phraseDuGagnant.append(jS);
+            phraseDuGagnant.append(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
             phraseDuGagnant.append("\n");
-            phraseDuGagnant.append("partie finie, ")
-                    .append(jN.getNom());
+            phraseDuGagnant.append(ANSI_VERT + "partie finie, ")
+                    .append(jN.getNom() + ANSI_RESET);
         } else {
             afficherLesPilesDesJoueurs(jN, jS, oldCartes);
-            phraseDuGagnant.append(jN);
+            phraseDuGagnant.append(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
             phraseDuGagnant.append("\n");
-            phraseDuGagnant.append("partie finie, ")
-                    .append(jS.getNom());
+            phraseDuGagnant.append(ANSI_VERT + "partie finie, ")
+                    .append(jS.getNom() + ANSI_RESET);
         }
 
-        phraseDuGagnant.append(" a gagné");
+        phraseDuGagnant.append(ANSI_VERT + " a gagné" + ANSI_RESET);
         return phraseDuGagnant;
     }
 }

@@ -35,10 +35,8 @@ public class Carte extends ACarte {
     @Override
     public boolean estUneCartePosable(ICarte selfD, ICarte selfA, ICarte adversaireD, ICarte adversaireA,
                                       List<ICarte> mesCartes, int idxCartePiocher) {
-        // dd
         if (estPosableDansLaPileANous(selfD, selfA, mesCartes, idxCartePiocher))
             return true;
-        // dd
         return estPosableDansLaPileAdverse(adversaireD, adversaireA, mesCartes, idxCartePiocher);
     }
 
@@ -98,7 +96,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansMaPileA(ICarte self){
-       return getValeur() > self.getValeur() || getValeur() + REGLEDES10 == self.getValeur();
+       return getValeur() > self.getValeur();
     }
 
     /**
@@ -108,7 +106,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansMaPileD(ICarte self){
-        return getValeur() < self.getValeur() || getValeur() - REGLEDES10 == self.getValeur();
+        return getValeur() < self.getValeur();
     }
 
     /**
@@ -118,7 +116,7 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansSaPileA(ICarte adversaireA) {
-        return getValeur() < adversaireA.getValeur() && !isCarteMiseChezAdversaire();
+        return getValeur() == adversaireA.getValeur() - REGLEDES10 && !isCarteMiseChezAdversaire();
     }
 
     /**
@@ -128,6 +126,6 @@ public class Carte extends ACarte {
      * dans le cas contraire
      */
     private boolean estPosableDansSaPileD(ICarte adversaireD) {
-        return getValeur() > adversaireD.getValeur() && !isCarteMiseChezAdversaire();
+        return getValeur() == adversaireD.getValeur() + REGLEDES10 && !isCarteMiseChezAdversaire();
     }
 }
