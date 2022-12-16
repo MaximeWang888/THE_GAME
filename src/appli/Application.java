@@ -31,7 +31,6 @@ public class Application {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED = "\u001B[31m";
 
-    public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_VERT = "\u001B[32m";
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -64,10 +63,10 @@ public class Application {
                             choix + " est bien enregistré " + ANSI_RESET);
                     System.out.println(ANSI_VERT + "\n---------------------------" +
                             "----------------------------------------------------" +
-                            "----------------------------------------------------" +
-                            "--------------------------------------" + ANSI_RESET);
-                    System.out.println("Règles du jeu : \nLe jeu “The game - le duel” est un" +
-                            " jeu de cartes qui se joue entre deux joueurs, chacun a 60 cartes " +
+                            "-------------------------------------" + ANSI_RESET);
+                    System.out.println(ANSI_BLUE + "[INFO] Règles du jeu : \n" + ANSI_RESET +
+                            "Le jeu “The game - le duel” est un" +
+                            " jeu de cartes qui se joue entre deux joueurs, \nchacun a 60 cartes " +
                             "et une pile ascendante et descendante. \n ");
                     System.out.println(
                             "Le but du jeu est de vider ses cartes mais vous gagnez aussi si votre " +
@@ -75,9 +74,10 @@ public class Application {
                     System.out.println(
                             "Chaque joueur commence avec six cartes en main et récupère entre deux et " +
                                     "six cartes selon le coup qu’il a joué.");
-                    System.out.println("Il y a plusieurs règles de pose mais la principale et " +
-                            "que sur le tas ascendant vous pouvez mettre que des cartes strictement " +
+                    System.out.println("Il y a plusieurs règles de pose mais la principale à retenir est " +
+                            "que sur le tas ascendant \nvous pouvez mettre que des cartes strictement " +
                             "croissantes et inversement sur l’autre tas.\n");
+                    System.out.println(ANSI_PURPLE + "[JOUER] Comment y jouer ?" + ANSI_RESET);
                     System.out.println(
                             "On doit jouer au minimum deux cartes minimum et au maximum six cartes\n" +
                                     "Pour jouer la carte n°2 sur la pile montante : 02^\n" +
@@ -88,15 +88,14 @@ public class Application {
                             "poser sa carte dans la adverse si et seulement si la carte du joueur" +
                             " est : \n- une dizaine au dessus si c'est une pile montante\n- " +
                             "une dizaine en dessous si c'est une pile descendante");
-                    System.out.println("Exemple : Si sur la pile montante de l'adversaire il y a " +
+                    System.out.println("Exemple : Si sur la pile montante de l'adversaire, il y a " +
                             "la carte 08 posée et que le joueur possède la carte 18, " +
                             "\nle joueur peut alors poser sa carte sur la pile montante de l'adversaire");
                     System.out.println("Pour poser la carte n°18 sur la pile montante de l'adversaire, il" +
                             " faut ajouter une apostrophe : 18^' ");
                     System.out.println(ANSI_VERT + "---------------------------" +
                             "----------------------------------------------------" +
-                            "----------------------------------------------------" +
-                            "--------------------------------------\n" + ANSI_RESET);
+                            "-------------------------------------\n" + ANSI_RESET);
                     break;
                 }
                 case "2": {
