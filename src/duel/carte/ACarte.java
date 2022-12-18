@@ -2,6 +2,8 @@ package duel.carte;
 
 import duel.interfaces.ICarte;
 
+import java.util.List;
+
 /**
  * Modélise une carte en général
  * @author  Maxime Wang, Senaa Abdellah, Minh-Tri NGUYEN

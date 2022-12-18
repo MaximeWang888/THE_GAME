@@ -19,173 +19,47 @@ public class Application {
     private static final Scanner sc = new Scanner(System.in);
 
     /**
-     * Creation et lancement du jeu
+     * Déclaration des couleurs pour l'affichage sur terminal
+     * ANSI_RESET => Pour remettre la couleur de base
      */
-    public static void main(String[] args) {
-        menu();
-    }
-
-    // Déclaration des couleurs pour l'affichage sur terminal
-    // ANSI_RESET => Pour remettre la couleur de base
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RED = "\u001B[31m";
-
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_VERT = "\u001B[32m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_PURPLE = "\u001B[35m";
-    public static ArrayList<ICarte> oldCartes = new ArrayList<>();
 
-    private static void menu() {
+    /**
+     * Creation et lancement du jeu
+     */
+    public static void main(String[] args) {
+        menuPrincipal();
+    }
+
+    private static void menuPrincipal() {
         String choix;
+        boolean estTypeAttendu = false, estTypeAttendu2 = false;
+
         System.out.println(ANSI_YELLOW + "Bienvenue dans “The game - le duel” \n" + ANSI_RESET);
         System.out.println(ANSI_BLUE + "[Info] Pour une meilleure expérience de jeu," +
                 " veuillez agrandir votre fenêtre de la console.\n[Info] (ou bien l'épingler sur le" +
                 " côté droit de votre IDE) \n" + ANSI_RESET);
-        boolean estTypeAttendu = false, estTypeAttendu2 = false;
 
         while (!estTypeAttendu) {
-            System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
-            System.out.println(ANSI_CYAN + "[DISPLAY] MENU " + "(faites votre choix) |" + ANSI_RESET);
-            System.out.println(ANSI_CYAN + "                                    |" + ANSI_RESET);
-            System.out.println(ANSI_CYAN + "[DISPLAY] 1 : règles du jeu         |" + ANSI_RESET);
-            System.out.println(ANSI_CYAN + "[DISPLAY] 2 : lancer une partie     |" + ANSI_RESET);
-            System.out.println(ANSI_CYAN + "[DISPLAY] 3 : quitter               |" + ANSI_RESET);
-            System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
-
-            System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
-            choix = sc.nextLine();
+            choix = affichageMenu();
 
             switch (choix) {
                 case "1": {
                     System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
                             choix + " est bien enregistré " + ANSI_RESET);
-                    System.out.println(ANSI_VERT + "\n---------------------------" +
-                            "----------------------------------------------------" +
-                            "-------------------------------------" + ANSI_RESET);
-                    System.out.println(ANSI_BLUE + "[INFO] Règles du jeu : \n" + ANSI_RESET +
-                            "Le jeu “The game - le duel” est un" +
-                            " jeu de cartes qui se joue entre deux joueurs, \nchacun a 60 cartes " +
-                            "et une pile ascendante et descendante. \n ");
-                    System.out.println(
-                            "Le but du jeu est de vider ses cartes mais vous gagnez aussi si votre " +
-                                    "adversaire ne peut plus jouer.\n");
-                    System.out.println(
-                            "Chaque joueur commence avec six cartes en main et récupère entre deux et " +
-                                    "six cartes selon le coup qu’il a joué.");
-                    System.out.println("Il y a plusieurs règles de pose mais la principale à retenir est " +
-                            "que sur le tas ascendant \nvous pouvez mettre que des cartes strictement " +
-                            "croissantes et inversement sur l’autre tas.\n");
-                    System.out.println(ANSI_PURPLE + "[JOUER] Comment y jouer ?" + ANSI_RESET);
-                    System.out.println(
-                            "On doit jouer au minimum deux cartes minimum et au maximum six cartes\n" +
-                                    "Pour jouer la carte n°2 sur la pile montante : 02^\n" +
-                                    "Pour jouer la carte n°2 sur la pile descendante : 02v\n");
-                    System.out.println("^[01] représente le tas de cartes montante \nv[60] " +
-                            "représente le tas de cartes descendante\n");
-                    System.out.println(ANSI_RED + "Cas spécial" + ANSI_RESET + " : Le joueur peut " +
-                            "poser sa carte dans la adverse si et seulement si la carte du joueur" +
-                            " est : \n- une dizaine au dessus si c'est une pile montante\n- " +
-                            "une dizaine en dessous si c'est une pile descendante");
-                    System.out.println("Exemple : Si sur la pile montante de l'adversaire, il y a " +
-                            "la carte 08 posée et que le joueur possède la carte 18, " +
-                            "\nle joueur peut alors poser sa carte sur la pile montante de l'adversaire");
-                    System.out.println("Pour poser la carte n°18 sur la pile montante de l'adversaire, il" +
-                            " faut ajouter une apostrophe : 18^' ");
-                    System.out.println(ANSI_VERT + "---------------------------" +
-                            "----------------------------------------------------" +
-                            "-------------------------------------\n" + ANSI_RESET);
+                    regleDuJeu();
                     break;
                 }
                 case "2": {
-                    String choix2;
-                    String nomJoueur1, nomJoueur2;
-                    IJoueur jN = null, jS = null;
-
                     System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
                             choix + " est bien enregistré \n" + ANSI_RESET);
-                    System.out.println(ANSI_CYAN + "------------------------------" +
-                            "---------------------------------------" + ANSI_RESET);
-                    System.out.println(ANSI_CYAN + "[DISPLAY] Mode de jeu (faites votre choix)" +
-                            "                          |" + ANSI_RESET);
-                    System.out.println(ANSI_CYAN + "                                 " +
-                            "                                   |" + ANSI_RESET);
-                    System.out.println(ANSI_CYAN + "[DISPLAY] 1 : avec un(e) ami(e)   " +
-                            "                                  |" + ANSI_RESET);
-                    System.out.println(ANSI_CYAN + "[DISPLAY] 2 : avec un ordinateur   " +
-                            "                                 |" + ANSI_RESET);
-                    System.out.println(ANSI_CYAN + "-------------------------------------" +
-                            "--------------------------------" + ANSI_RESET);
-
-                    System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
-                    while (!estTypeAttendu2) {
-                        choix2 = sc.nextLine();
-
-                        switch (choix2) {
-                            case "1": {
-                                System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
-                                        choix2 + " est bien enregistré \n" + ANSI_RESET);
-                                System.out.println(ANSI_VERT + "\n---------------------------" +
-                                        "----------------------------------------------------" +
-                                        "-------------------------------------" + ANSI_RESET);
-                                System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
-                                        " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
-
-                                System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
-                                        " nom du joueur n°1 : " + ANSI_RESET);
-                                nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
-                                System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
-                                        "' bien enregistré !\n" + ANSI_RESET);
-
-                                System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
-                                        " nom du joueur n°2 : " + ANSI_RESET);
-                                nomJoueur2 = sc.nextLine(); nomJoueur2 = nomJoueur2.trim();
-                                System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur2 +
-                                        "' bien enregistré !\n" + ANSI_RESET);
-                                jN = new Joueur(nomJoueur1, true);
-                                jS = new Joueur(nomJoueur2);
-                                jeu(jN, jS);
-
-                                sc.close();
-
-                                // Affiche le nom du gagnant à la fin du jeu
-                                System.out.println(leGagnant(jN, jS));
-                                System.exit(0);
-                                break;
-                            }
-                            case "2": {
-                                System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
-                                        choix2 + " est bien enregistré \n" + ANSI_RESET);
-                                System.out.println(ANSI_VERT + "\n---------------------------" +
-                                        "----------------------------------------------------" +
-                                        "-------------------------------------" + ANSI_RESET);
-                                System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
-                                        " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
-
-                                System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
-                                        " nom du joueur n°1 : " + ANSI_RESET);
-                                nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
-                                System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
-                                        "' bien enregistré !\n" + ANSI_RESET);
-                                jN = new Joueur(nomJoueur1, true);
-                                jS = new JoueurOrdinateur();
-                                jeu(jN, jS);
-
-                                sc.close();
-
-                                // Affiche le nom du gagnant à la fin du jeu
-                                System.out.println(leGagnant(jN, jS));
-                                System.exit(0);
-                                break;
-                            }
-                            default:
-                                System.out.println(ANSI_RED + "[ERROR] Ce choix '" + choix2 +
-                                        "' n'existe pas. Veuillez resaisir à nouveau. \n" + ANSI_RESET);
-                                System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
-                                break;
-                        }
-                    }
+                    menuSecondaire(estTypeAttendu2);
                 }
                 case "3":
                     System.out.println("Nous allons quitter de l'application...");
@@ -198,12 +72,152 @@ public class Application {
         }
     }
 
+    private static String affichageMenu() {
+        String choix;
+        System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] MENU " + "(faites votre choix) |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "                                    |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] 1 : règles du jeu         |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] 2 : lancer une partie     |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] 3 : quitter               |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
+
+        System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
+        choix = sc.nextLine();
+        return choix;
+    }
+
+    private static void regleDuJeu() {
+        System.out.println(ANSI_VERT + "\n---------------------------" +
+                "----------------------------------------------------" +
+                "-------------------------------------" + ANSI_RESET);
+        System.out.println(ANSI_BLUE + "[INFO] Règles du jeu : \n" + ANSI_RESET +
+                "Le jeu “The game - le duel” est un" +
+                " jeu de cartes qui se joue entre deux joueurs, \nchacun a 60 cartes " +
+                "et une pile ascendante et descendante. \n ");
+        System.out.println(
+                "Le but du jeu est de vider ses cartes mais vous gagnez aussi si votre " +
+                        "adversaire ne peut plus jouer.\n");
+        System.out.println(
+                "Chaque joueur commence avec six cartes en main et récupère entre deux et " +
+                        "six cartes selon le coup qu’il a joué.");
+        System.out.println("Il y a plusieurs règles de pose mais la principale à retenir est " +
+                "que sur le tas ascendant \nvous pouvez mettre que des cartes strictement " +
+                "croissantes et inversement sur l’autre tas.\n");
+        System.out.println(ANSI_PURPLE + "[JOUER] Comment y jouer ?" + ANSI_RESET);
+        System.out.println(
+                "On doit jouer au minimum deux cartes minimum et au maximum six cartes\n" +
+                        "Pour jouer la carte n°2 sur la pile montante : 02^\n" +
+                        "Pour jouer la carte n°2 sur la pile descendante : 02v\n");
+        System.out.println("^[01] représente le tas de cartes montante \nv[60] " +
+                "représente le tas de cartes descendante\n");
+        System.out.println(ANSI_RED + "Cas spécial" + ANSI_RESET + " : Le joueur peut " +
+                "poser sa carte dans la adverse si et seulement si la carte du joueur" +
+                " est : \n- une dizaine au dessus si c'est une pile montante\n- " +
+                "une dizaine en dessous si c'est une pile descendante");
+        System.out.println("Exemple : Si sur la pile montante de l'adversaire, il y a " +
+                "la carte 08 posée et que le joueur possède la carte 18, " +
+                "\nle joueur peut alors poser sa carte sur la pile montante de l'adversaire");
+        System.out.println("Pour poser la carte n°18 sur la pile montante de l'adversaire, il" +
+                " faut ajouter une apostrophe : 18^' ");
+        System.out.println(ANSI_VERT + "---------------------------" +
+                "----------------------------------------------------" +
+                "-------------------------------------\n" + ANSI_RESET);
+    }
+
+    private static void menuSecondaire(boolean estTypeAttendu2) {
+        String choix2;
+        String nomJoueur1, nomJoueur2;
+        IJoueur jN = null, jS = null;
+
+        System.out.println(ANSI_CYAN + "------------------------------" +
+                "---------------------------------------" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] Mode de jeu (faites votre choix)" +
+                "                          |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "                                 " +
+                "                                   |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] 1 : avec un(e) ami(e)   " +
+                "                                  |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "[DISPLAY] 2 : avec un ordinateur   " +
+                "                                 |" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "-------------------------------------" +
+                "--------------------------------" + ANSI_RESET);
+
+        System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
+        while (!estTypeAttendu2) {
+            choix2 = sc.nextLine();
+
+            switch (choix2) {
+                case "1": {
+                    System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
+                            choix2 + " est bien enregistré \n" + ANSI_RESET);
+                    System.out.println(ANSI_VERT + "\n---------------------------" +
+                            "----------------------------------------------------" +
+                            "-------------------------------------" + ANSI_RESET);
+                    System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
+                            " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
+
+                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
+                            " nom du joueur n°1 : " + ANSI_RESET);
+                    nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
+                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
+                            "' bien enregistré !\n" + ANSI_RESET);
+
+                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
+                            " nom du joueur n°2 : " + ANSI_RESET);
+                    nomJoueur2 = sc.nextLine(); nomJoueur2 = nomJoueur2.trim();
+                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur2 +
+                            "' bien enregistré !\n" + ANSI_RESET);
+                    jN = new Joueur(nomJoueur1, true);
+                    jS = new Joueur(nomJoueur2);
+                    jeu(jN, jS);
+
+                    sc.close();
+
+                    // Affiche le nom du gagnant à la fin du jeu
+                    System.out.println(afficherLeGagnant(jN, jS));
+                    System.exit(0);
+                    break;
+                }
+                case "2": {
+                    System.out.println(ANSI_VERT + "[SUCCESS] Votre choix " +
+                            choix2 + " est bien enregistré \n" + ANSI_RESET);
+                    System.out.println(ANSI_VERT + "\n---------------------------" +
+                            "----------------------------------------------------" +
+                            "-------------------------------------" + ANSI_RESET);
+                    System.out.print(ANSI_BLUE + "[INFO] La partie commence" +
+                            " (amusez-vous bien !) \n\n\n" + ANSI_RESET);
+
+                    System.out.print(ANSI_CYAN + "[JOUER] Veuillez saisir le" +
+                            " nom du joueur n°1 : " + ANSI_RESET);
+                    nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
+                    System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
+                            "' bien enregistré !\n" + ANSI_RESET);
+                    jN = new Joueur(nomJoueur1, true);
+                    jS = new JoueurOrdinateur();
+                    jeu(jN, jS);
+
+                    sc.close();
+
+                    // Affiche le nom du gagnant à la fin du jeu
+                    System.out.println(afficherLeGagnant(jN, jS));
+                    System.exit(0);
+                    break;
+                }
+                default:
+                    System.out.println(ANSI_RED + "[ERROR] Ce choix '" + choix2 +
+                            "' n'existe pas. Veuillez resaisir à nouveau. \n" + ANSI_RESET);
+                    System.out.print(ANSI_PURPLE + "\n[JOUER] Votre choix : " + ANSI_RESET);
+                    break;
+            }
+        }
+    }
+
     private static void jeu(IJoueur jN, IJoueur jS) {
         // Tant que le jeu n'est pas terminé
         while ((jN.aDesCartes() && jS.aDesCartes()) &&
                 (jN.peutPoserDesCartes(jS) && jS.peutPoserDesCartes(jN))) {
-            oldCartes = getOldCartes(jN, jS);
-            afficherLesPilesDesJoueurs(jN, jS, oldCartes);
+            afficherLesPilesDesJoueurs(jN, jS);
             if (jN.aMonTourDeJouer(jS)) {
                 System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
                         + jN.getNom() + "' de jouer\n" + ANSI_RESET);
@@ -311,23 +325,13 @@ public class Application {
         }
     }
 
-    private static ArrayList<ICarte> getOldCartes(IJoueur jN, IJoueur jS) {
-        ArrayList listOldCartes = new ArrayList<ICarte>();
-        listOldCartes.add(jN.getAscendant());
-        listOldCartes.add(jN.getDescendant());
-        listOldCartes.add(jS.getAscendant());
-        listOldCartes.add(jS.getDescendant());
-
-        return listOldCartes;
-    }
-
     /**
      * Permet d'avoir une réprésentation textuelle des piles des joueurs
      *
      * @param jN le joueur NORD
      * @param jS le joueur SUD
      */
-    private static void afficherLesPilesDesJoueurs(IJoueur jN, IJoueur jS, List<ICarte> oldCartes) {
+    private static void afficherLesPilesDesJoueurs(IJoueur jN, IJoueur jS) {
         Formatter fmt = new Formatter();
         Formatter fm = new Formatter();
         int nbSpace = jN.getNom().length() + jS.getNom().length();
@@ -366,18 +370,18 @@ public class Application {
      * @param jS le joueur SUD
      * @return la représentation textuelle du gagnant de la partie
      */
-    private static StringBuilder leGagnant(IJoueur jN, IJoueur jS) {
+    private static StringBuilder afficherLeGagnant(IJoueur jN, IJoueur jS) {
         // Construit un StringBuilder pour l'affichage du gagnant de la partie
         StringBuilder phraseDuGagnant = new StringBuilder();
 
         if (!jN.aDesCartes() || !jS.peutPoserDesCartes(jN)) {
-            afficherLesPilesDesJoueurs(jN, jS, oldCartes);
+            afficherLesPilesDesJoueurs(jN, jS);
             phraseDuGagnant.append(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
             phraseDuGagnant.append("\n");
             phraseDuGagnant.append(ANSI_VERT + "[GAMEOVER] partie finie, ")
                     .append(jN.getNom() + ANSI_RESET);
         } else {
-            afficherLesPilesDesJoueurs(jN, jS, oldCartes);
+            afficherLesPilesDesJoueurs(jN, jS);
             phraseDuGagnant.append(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
             phraseDuGagnant.append("\n");
             phraseDuGagnant.append(ANSI_VERT + "[GAMEOVER] partie finie, ")

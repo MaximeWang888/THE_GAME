@@ -35,6 +35,8 @@ public class Paquet extends APaquet {
             if (cartePiocher.estUneCartePosable(selfDesc, selfAscend, advDesc, advAscend, copieDesCartes, idx)){
                 ++nbTotalDeCartesJouables;
                 idx = -1;  // Une carte est posable alors nous allons regarder à nouveau toutes nos cartes
+                resetCardsValuesToCurrentValues(selfD, selfA, adversaireD, adversaireA,
+                        selfDesc, selfAscend, advDesc, advAscend);
                 if (nbTotalDeCartesJouables==2){
                     Carte.setCarteMiseChezAdversaire(false);
                     return true;
@@ -43,6 +45,16 @@ public class Paquet extends APaquet {
         }
         Carte.setCarteMiseChezAdversaire(false);
         return false;
+    }
+
+    private void resetCardsValuesToCurrentValues(ICarte selfD, ICarte selfA,
+                                                 ICarte adversaireD, ICarte adversaireA,
+                                                 ICarte selfDesc, ICarte selfAscend,
+                                                 ICarte advDesc, ICarte advAscend) {
+        selfDesc.setValeur(selfD.getValeur());
+        selfAscend.setValeur(selfA.getValeur());
+        advDesc.setValeur(adversaireD.getValeur());
+        advAscend.setValeur(adversaireA.getValeur());
     }
 
 }
