@@ -1,7 +1,7 @@
 import duel.carte.Carte;
 import duel.interfaces.IJoueur;
 import duel.interfaces.IPaquet;
-import duel.joueur.Joueur;
+import duel.joueur.JoueurNormal;
 import duel.paquet.Paquet;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class PaquetTest {
     @Test
     public void testGetCarte() {
         // GIVEN
-        IJoueur j = new Joueur("Sana");
+        IJoueur j = new JoueurNormal("Sana");
 
         // WHEN
         j.getMesCartes().getCartes().add(new Carte(500));
@@ -73,7 +73,7 @@ public class PaquetTest {
     @Test
     public void testPaquetDeCartesPosable() {
         // GIVEN
-        IJoueur j = new Joueur("Sana");
+        IJoueur j = new JoueurNormal("Sana");
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
         for (int i = 0; i < nbCartes; i++)
@@ -96,7 +96,7 @@ public class PaquetTest {
     @Test
     public void testIsCarteEnMain() {
         // GIVEN
-        IJoueur jV = new Joueur("Sana");
+        IJoueur jV = new JoueurNormal("Sana");
 
         // WHEN
         jV.ajoute(new Carte(100));

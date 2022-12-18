@@ -2,7 +2,7 @@ package appli;
 
 import duel.interfaces.ICarte;
 import duel.interfaces.IJoueur;
-import duel.joueur.Joueur;
+import duel.joueur.JoueurNormal;
 import duel.joueur.JoueurOrdinateur;
 
 import java.util.*;
@@ -72,6 +72,10 @@ public class Application {
         }
     }
 
+    /**
+     * Affichage sur la console de jeu le menu pour faciliter l'utilisateur a faire son choix
+     * @return le choix que l'utilisateur aura fait
+     */
     private static String affichageMenu() {
         String choix;
         System.out.println(ANSI_CYAN + "-------------------------------------" + ANSI_RESET);
@@ -87,6 +91,9 @@ public class Application {
         return choix;
     }
 
+    /**
+     * Affichage sur la console de jeu les regles du jeu
+     */
     private static void regleDuJeu() {
         System.out.println(ANSI_VERT + "\n---------------------------" +
                 "----------------------------------------------------" +
@@ -125,6 +132,10 @@ public class Application {
                 "-------------------------------------\n" + ANSI_RESET);
     }
 
+    /**
+     * Notre second menu correspond au cas où l'utilisateur veut jouer au jeu
+     * @param estTypeAttendu2 un boolean qui nous dit si c'est bien le type attendu, càd (1 ou 2)
+     */
     private static void menuSecondaire(boolean estTypeAttendu2) {
         String choix2;
         String nomJoueur1, nomJoueur2;
@@ -168,8 +179,8 @@ public class Application {
                     nomJoueur2 = sc.nextLine(); nomJoueur2 = nomJoueur2.trim();
                     System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur2 +
                             "' bien enregistré !\n" + ANSI_RESET);
-                    jN = new Joueur(nomJoueur1, true);
-                    jS = new Joueur(nomJoueur2);
+                    jN = new JoueurNormal(nomJoueur1, true);
+                    jS = new JoueurNormal(nomJoueur2);
                     jeu(jN, jS);
 
                     sc.close();
@@ -193,7 +204,7 @@ public class Application {
                     nomJoueur1 = sc.nextLine(); nomJoueur1 = nomJoueur1.trim();
                     System.out.println(ANSI_VERT + "[SUCCESS] Nom du joueur '" + nomJoueur1 +
                             "' bien enregistré !\n" + ANSI_RESET);
-                    jN = new Joueur(nomJoueur1, true);
+                    jN = new JoueurNormal(nomJoueur1, true);
                     jS = new JoueurOrdinateur();
                     jeu(jN, jS);
 
@@ -213,6 +224,11 @@ public class Application {
         }
     }
 
+    /**
+     * Le jeu entre deux joueurs
+     * @param jN le joueur n°1
+     * @param jS  le joueur n°2
+     */
     private static void jeu(IJoueur jN, IJoueur jS) {
         // Tant que le jeu n'est pas terminé
         while ((jN.aDesCartes() && jS.aDesCartes()) &&
@@ -222,12 +238,12 @@ public class Application {
                 System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
                         + jN.getNom() + "' de jouer\n" + ANSI_RESET);
                 System.out.println(ANSI_CYAN + "[DISPLAY] " + jN + ANSI_RESET);
-                joue(jN, jS);
+                joueUnCoup(jN, jS);
             } else if (jS.aMonTourDeJouer(jN)) {
                 System.out.println(ANSI_BLUE + "\n[INFO] C'est au tour de '"
                         + jS.getNom() + "' de jouer\n" + ANSI_RESET);
                 System.out.println(ANSI_CYAN + "[DISPLAY] " + jS + ANSI_RESET);
-                joue(jS, jN);
+                joueUnCoup(jS, jN);
             }
         }
     }
@@ -238,7 +254,7 @@ public class Application {
      * @param j           Le joueur qui joue son coup
      * @param jAdversaire Le joueur adverse qui ne joue pas
      */
-    private static void joue(IJoueur j, IJoueur jAdversaire) {
+    private static void joueUnCoup(IJoueur j, IJoueur jAdversaire) {
         String[] choixTas = {"^", "v", "^'", "v'"};
         if (j.getNom() != "Ordinateur") {
             // Dans le cas général, un affichage plus une demande de saisie au joueur
@@ -295,6 +311,12 @@ public class Application {
         }
     }
 
+    /**
+     * Retourne le nombre de cartes à piocher
+     * selon le nombre de cartes qu'il lui reste dans sa pioche
+     * @param j le joueur qui veut calculer son nombre de cartes à piocher
+     * @return le nombre de cartes à piocher
+     */
     private static int getNbDeCarteAPiocher(IJoueur j) {
         // Piocher
         int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
@@ -305,6 +327,12 @@ public class Application {
         return nbDeCarteAPiocher;
     }
 
+    /**
+     * Le jeu de l'ordinateur
+     * @param j                     L'actuel joueur
+     * @param jAdversaire           Le joueur adversaire
+     * @param saisieDesCartesJouer  Les cartes jouées
+     */
     private static void joueAuHasardBot(IJoueur j, IJoueur jAdversaire, List<String> saisieDesCartesJouer) {
         String[] test = new String[2];
         for (int i = 0; i < saisieDesCartesJouer.size(); i++) {
@@ -328,8 +356,8 @@ public class Application {
     /**
      * Permet d'avoir une réprésentation textuelle des piles des joueurs
      *
-     * @param jN le joueur NORD
-     * @param jS le joueur SUD
+     * @param jN le joueur n°1
+     * @param jS le joueur n°2
      */
     private static void afficherLesPilesDesJoueurs(IJoueur jN, IJoueur jS) {
         Formatter fmt = new Formatter();
@@ -366,8 +394,8 @@ public class Application {
      * Permet d'avoir une représentation du joueur gagnant
      * sous la forme d'une chaîne de caractères.
      *
-     * @param jN le joueur NORD
-     * @param jS le joueur SUD
+     * @param jN le joueur n°1
+     * @param jS le joueur n°2
      * @return la représentation textuelle du gagnant de la partie
      */
     private static StringBuilder afficherLeGagnant(IJoueur jN, IJoueur jS) {

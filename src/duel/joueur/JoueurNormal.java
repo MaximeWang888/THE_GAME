@@ -10,13 +10,13 @@ import java.util.Arrays;
     * @author  Maxime Wang
     * @version 1.1
  */
-public class Joueur extends AJoueur {
+public class JoueurNormal extends AJoueur {
 
-    public Joueur(String nom, boolean monTourDeJouer) {
+    public JoueurNormal(String nom, boolean monTourDeJouer) {
         super(nom, monTourDeJouer);
     }
 
-    public Joueur(String nom) {
+    public JoueurNormal(String nom) {
         super(nom);
     }
 

@@ -1,10 +1,9 @@
-import duel.*;
 import duel.carte.Carte;
 import duel.coup.Coup;
 import duel.interfaces.ICoup;
 import duel.interfaces.IJoueur;
 import duel.interfaces.IPaquet;
-import duel.joueur.Joueur;
+import duel.joueur.JoueurNormal;
 import duel.paquet.Paquet;
 import org.junit.Test;
 
@@ -40,7 +39,7 @@ public class CoupTest {
     @Test
     public void testEstUnCoupValide() {
         // GIVEN
-        IJoueur j = new Joueur("Maxime");
+        IJoueur j = new JoueurNormal("Maxime");
         ICoup c1 = new Coup();
         // Retire toutes ses cartes
         int nbCartes = j.getMesCartes().getNbCartes();
@@ -134,8 +133,8 @@ public class CoupTest {
     @Test
     public void testPeutEtrePoser() {
         // GIVEN
-        IJoueur jS = new Joueur("Maxime");
-        IJoueur jN = new Joueur("Sana");
+        IJoueur jS = new JoueurNormal("Maxime");
+        IJoueur jN = new JoueurNormal("Sana");
 
         // THEN
         assertTrue(jS.getCoup().peutEtrePoser(jS, jN, false));
