@@ -235,7 +235,7 @@ public class Application {
             // Dans le cas où la saisie du joueur n'est pas une saisie valide
             while (!j.estUneSaisiValide(saisieDesCartesJouer, jAdversaire)) {
                 System.out.println(ANSI_RED + "\n[ERROR] Votre coup '" + cartesJouer +
-                        "' n'est pas valide, veuillez rejouer ..." + ANSI_RESET);
+                        "' n'est pas valide, veuillez rejouer ...\n" + ANSI_RESET);
                 System.out.println(ANSI_BLUE + "[INFO] Rappel une saisie valide comprend deux cartes à poser " +
                         "aux minimums et des espaces entre chaque cartes" + ANSI_RESET);
                 System.out.println("Exemples: ");
@@ -255,12 +255,7 @@ public class Application {
                 cartesJouer = sc.nextLine();
                 saisieDesCartesJouer = cartesJouer.split(" ");
             }
-            // Piocher
-            int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
-            for (int i = 0; i < nbDeCarteAPiocher; i++) {
-                if (!j.getMaPioche().estVide() && j.getMesCartes().getNbCartes() < 7)
-                    j.getMesCartes().getCartes().add(j.getMaPioche().piocher());
-            }
+            int nbDeCarteAPiocher = getNbDeCarteAPiocher(j);
             // Trier les cartes de manière croissantes
             j.getMesCartes().getCartes().sort(Comparator.comparing(ICarte::getValeur));
             System.out.println(ANSI_VERT + "[SUCCESS] Votre jeu est bien enregistré " +
@@ -279,9 +274,21 @@ public class Application {
                     saisieDesCartesJouer.add(carte + choix);
                 }
             }
-
             joueAuHasardBot(j, jAdversaire, saisieDesCartesJouer);
+            int nbDeCarteAPiocher = getNbDeCarteAPiocher(j);
+            System.out.println(ANSI_VERT + "[SUCCESS] " + j.getCoup().getCoups().size() + " cartes posées, " +
+                    nbDeCarteAPiocher + " cartes piochées " + ANSI_RESET);
         }
+    }
+
+    private static int getNbDeCarteAPiocher(IJoueur j) {
+        // Piocher
+        int nbDeCarteAPiocher = j.getCoup().calculCartePiocher(j.getMaPioche(), j.getMesCartes());
+        for (int i = 0; i < nbDeCarteAPiocher; i++) {
+            if (!j.getMaPioche().estVide() && j.getMesCartes().getNbCartes() < 7)
+                j.getMesCartes().getCartes().add(j.getMaPioche().piocher());
+        }
+        return nbDeCarteAPiocher;
     }
 
     private static void joueAuHasardBot(IJoueur j, IJoueur jAdversaire, List<String> saisieDesCartesJouer) {
@@ -330,7 +337,7 @@ public class Application {
         System.out.print("[INFO] Présentation des piles de cartes" +
                 " de chaque joueur (ascendante et descendante)\n");
         // Affichage des piles de cartes (Joueur 1)
-        System.out.print(fmt.format("\n[INFO] %-15s", jN.getNom()) + " : ^[" + jN.getAscendant() + "] "
+        System.out.print(fmt.format("\n[INFO:Joueur n°1] %-15s", jN.getNom()) + " : ^[" + jN.getAscendant() + "] "
                 + "v[" + jN.getDescendant() + "]");
         for (int i = 0; i < nbSpace; i++) {
             System.out.print(" ");
@@ -339,7 +346,7 @@ public class Application {
                 " cartes en main ET " + jN.getNbDeMaPioche() + " cartes dans ma pioche)");
 
         // Affichage des piles de cartes (joueur 2)
-        System.out.print(fm.format("[INFO] %-15s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
+        System.out.print(fm.format("[INFO:Joueur n°2] %-15s", jS.getNom()) + " : ^[" + jS.getAscendant() + "] "
                 + "v[" + jS.getDescendant() + "]");
         for (int i = 0; i < nbSpace; i++) {
             System.out.print(" ");
